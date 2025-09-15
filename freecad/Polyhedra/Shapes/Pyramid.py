@@ -7,8 +7,10 @@ import math
 import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Vertexes import horizontal_regular_pyramid_vertexes
-from ..Utils.Files import icons_dir
+
+from FreeCADGui import Command
 
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -132,11 +134,11 @@ class Pyramid:
             solid = Part.makeSolid(shell)
             obj.Shape = solid
 
-class PyramidCommand:
+class PyramidCommand ():
 
-    def GetResources(self):
+    def GetResources ( self ):
         return {
-            "Pixmap": os.path.join(icons_dir, "pyramid.svg"),
+            'Pixmap' : icon('Shapes/Pyramid') ,
             "Accel": "Shift+P",
             "MenuText": QT_TRANSLATE_NOOP("Pyramid", "Pyramid"),
             "ToolTip": QT_TRANSLATE_NOOP("Pyramid", "Generate a Pyramid with any number of sides"),

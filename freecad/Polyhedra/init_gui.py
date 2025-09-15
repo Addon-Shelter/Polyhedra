@@ -50,6 +50,7 @@ import FreeCADGui
 
 from FreeCAD import Gui
 
+from .Utils.Resources import icon
 from .Utils.Files import getWorkbenchFolder
 from .Shapes import registerCommands
 
@@ -70,12 +71,7 @@ class PolyhydronsWorkbench(FreeCAD.Gui.Workbench):
 
     def __init__(self):
 
-        self.__class__.Icon = os.path.join(
-            getWorkbenchFolder(),
-            "Resources",
-            "Icons",
-            "Pyramids-and-Polyhedrons_workbench_icon.svg",
-        )
+        self.__class__.Icon = icon('Workbench')
 
     def Initialize(self):
         """This function is executed when FreeCAD starts"""

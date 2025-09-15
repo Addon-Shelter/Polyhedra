@@ -1,6 +1,5 @@
 
-from os.path import join
-from .Files import getWorkbenchFolder
+from .Resources import icon
 
 
 class ViewProviderBox:
@@ -21,10 +20,7 @@ class ViewProviderBox:
         pass
 
     def getIcon(self):
-        return join(
-            getWorkbenchFolder(), "Resources", "Icons",
-            (self.obj_name).lower() + ".svg"
-        )
+        return icon(f'Shapes/{ self.obj_name }')
 
     def __getstate__(self):
         return None

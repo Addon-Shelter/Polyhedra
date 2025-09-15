@@ -7,9 +7,9 @@ import math
 import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
 from ..Utils.Geodesic import geodesic_radius2side
-from ..Utils.Files import icons_dir
 
 from FreeCAD import Base
 
@@ -147,7 +147,7 @@ class Geodesic_sphere:
 class GeodesicSphereCommand:
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(icons_dir, "geodesic_sphere.svg"),
+            "Pixmap": icon('Shapes/Geodesic-Sphere') ,
             "Accel": "Shift+G",
             "MenuText": QT_TRANSLATE_NOOP("Geodesic_sphere", "Geodesic sphere"),
             "ToolTip": QT_TRANSLATE_NOOP("Geodesic_sphere", "Generate Geodesic Spheres"),
@@ -157,7 +157,7 @@ class GeodesicSphereCommand:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GeodesicSphere")
         Geodesic_sphere(obj)
         #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Geodesic_sphere")
+        ViewProviderBox(obj.ViewObject, "Geodesic-sphere")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
         return

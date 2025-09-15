@@ -6,8 +6,8 @@ import Part
 import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Other import createSolid
-from ..Utils.Files import icons_dir
 
 from FreeCAD import Vector
 
@@ -238,7 +238,7 @@ class RegularSolid:
 class RegularSolidCommand:
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(icons_dir, "regularsolid.svg"),
+            "Pixmap": icon('Shapes/Regular-Solid') ,
             "Accel": "Shift+R",
             "MenuText": QT_TRANSLATE_NOOP("RegularSolid", "Regular Solid"),
             "ToolTip": QT_TRANSLATE_NOOP("RegularSolid", "Generate a Regular Solid"),
@@ -248,7 +248,7 @@ class RegularSolidCommand:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "RegularSolid")
         RegularSolid(obj)
         #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "RegularSolid")
+        ViewProviderBox(obj.ViewObject, "Regular-Solid")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
 

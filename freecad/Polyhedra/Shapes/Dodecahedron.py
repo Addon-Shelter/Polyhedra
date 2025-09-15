@@ -3,11 +3,10 @@ import FreeCADGui
 import FreeCAD
 import Part
 import math
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
-from ..Utils.Files import icons_dir
 
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -96,7 +95,7 @@ class Dodecahedron:
 class DodecahedronCommand:
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(icons_dir, "dodecahedron.svg"),
+            "Pixmap": icon('Shapes/Dodecahedron') ,
             "Accel": "Shift+D",
             "MenuText": QT_TRANSLATE_NOOP("Dodecahedron", "Dodecahedron"),
             "ToolTip": QT_TRANSLATE_NOOP("Dodecahedron", "Generate a Dodecahedron"),

@@ -7,8 +7,8 @@ import math
 import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
-from ..Utils.Files import icons_dir
 
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -159,7 +159,7 @@ class Icosahedron_truncated:
 class IcosahedronTrCommand:
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(icons_dir, "icosahedron_trunc.svg"),
+            "Pixmap": icon('Shapes/Icosahedron-Truncated') ,
             "Accel": "Shift+F",
             "MenuText": QT_TRANSLATE_NOOP("Icosahedron_truncated", "Icosahedron truncated"),
             "ToolTip": QT_TRANSLATE_NOOP(
@@ -171,7 +171,7 @@ class IcosahedronTrCommand:
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "IcosahedronTruncated")
         Icosahedron_truncated(obj)
         #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Icosahedron_trunc")
+        ViewProviderBox(obj.ViewObject, "Icosahedron-Truncated")
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.SendMsgToActiveView("ViewFit")
         return

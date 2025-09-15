@@ -7,8 +7,8 @@ import math
 import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Resources import icon
 from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
-from ..Utils.Files import icons_dir
 
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -71,7 +71,7 @@ class TetrahedronCommand:
 
     def GetResources(self):
         return {
-            "Pixmap": os.path.join(icons_dir, "tetrahedron.svg"),
+            "Pixmap": icon('Shapes/Tetrahedron') ,
             "Accel": "Shift+T",
             "MenuText": QT_TRANSLATE_NOOP("Tetrahedron", "Tetrahedron"),
             "ToolTip": QT_TRANSLATE_NOOP("Tetrahedron", "Generate a Tetrahedron"),
