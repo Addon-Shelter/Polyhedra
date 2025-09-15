@@ -50,7 +50,8 @@ import FreeCADGui
 
 from FreeCAD import Gui
 
-from .pyramids_utils import getWorkbenchFolder
+from .Utils.Files import getWorkbenchFolder
+from .Shapes import registerCommands
 
 # Add translations path
 FreeCADGui.addLanguagePath(
@@ -78,7 +79,9 @@ class PolyhydronsWorkbench(FreeCAD.Gui.Workbench):
 
     def Initialize(self):
         """This function is executed when FreeCAD starts"""
-        import freecad.Polyhedra.polyhedrons # import here all the needed files that create your FreeCAD commands
+
+        registerCommands()
+        
         self.list = ["Pyramid","Tetrahedron","Hexahedron","Octahedron","Dodecahedron","Icosahedron","Icosahedron_truncated",
                      "Geodesic_sphere","RegularSolid"] # A list of command names created in the line above
         #self.appendMenu(["An existing Menu","My submenu"],self.list) # appends a submenu to an existing menu

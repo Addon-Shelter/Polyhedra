@@ -1,0 +1,94 @@
+
+
+import FreeCADGui
+import FreeCAD
+import Part
+import math
+import os
+
+from ..Utils.ViewProviderBox import ViewProviderBox
+from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Files import icons_dir
+
+
+QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+
+
+class Octahedron:
+    # Z = R * sqrt(2)
+    radiusvalue = 0
+
+    def __init__(self, obj, radius=5):
+        obj.addProperty(
+            "App::PropertyLength",
+            "Radius",
+            "Octahedron",
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the octahedron"),
+        ).Radius = radius
+        obj.addProperty(
+            "App::PropertyLength",
+            "Side",
+            "Octahedron",
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the octahedron"),
+        )
+        obj.Proxy = self
+
+    def execute (self,obj):
+
+        radius = float(obj.Radius)
+        if (radius != self.radiusvalue):
+            obj.Side = radius * math.sqrt(2)
+            self.radiusvalue = radius
+        else:
+            self.radiusvalue = float(obj.Side / math.sqrt(2))
+            obj.Radius = self.radiusvalue
+            radius = self.radiusvalue
+
+
+
+        faces = []
+        vertexes_middle = horizontal_regular_polygon_vertexes(4,radius,0)
+        vertexes_bottom = horizontal_regular_polygon_vertexes(1,0,-radius)
+        vertexes_top    = horizontal_regular_polygon_vertexes(1,0,radius)
+
+        for i in range(4):
+            vertexes_side=[vertexes_middle[i],vertexes_middle[i+1],vertexes_top[0],vertexes_middle[i]]
+            polygon_side=Part.makePolygon(vertexes_side)
+            faces.append(Part.Face(polygon_side))
+
+        for i in range(4):
+            vertexes_side=[vertexes_middle[i],vertexes_middle[i+1],vertexes_bottom[0],vertexes_middle[i]]
+            polygon_side=Part.makePolygon(vertexes_side)
+            faces.append(Part.Face(polygon_side))
+
+        shell = Part.makeShell(faces)
+        solid = Part.makeSolid(shell)
+        obj.Shape = solid
+
+
+class OctahedronCommand:
+
+    def GetResources(self):
+        return {
+            "Pixmap": os.path.join(icons_dir, "octahedron.svg"),
+            "Accel": "Shift+O",
+            "MenuText": QT_TRANSLATE_NOOP("Octahedron", "Octahedron"),
+            "ToolTip": QT_TRANSLATE_NOOP("Octahedron", "Generate a Octahedron"),
+        }
+
+    def Activated(self):
+        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Octahedron")
+        Octahedron(obj)
+        #obj.ViewObject.Proxy=0
+        ViewProviderBox(obj.ViewObject, "Octahedron")
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.SendMsgToActiveView("ViewFit")
+        return
+
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument == None:
+               return False
+        else:
+               return True
+
