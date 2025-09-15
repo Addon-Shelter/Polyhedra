@@ -59,11 +59,11 @@ import FreeCADGui
 import Part
 from FreeCAD import Base
 
-import pyramids_utils
+from .pyramids_utils import getWorkbenchFolder
 
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 
-icons_dir = os.path.join(pyramids_utils.getWorkbenchFolder(), "Resources", "Icons")
+icons_dir = os.path.join(getWorkbenchFolder(), "Resources", "Icons")
 
 def horizontal_regular_polygon_vertexes(sidescount,radius,z, startangle = 0):
     vertexes = []
@@ -117,7 +117,7 @@ class ViewProviderBox:
     def getIcon(self):
         return (
             os.path.join(
-                pyramids_utils.getWorkbenchFolder(), "Resources", "Icons",
+                getWorkbenchFolder(), "Resources", "Icons",
                 (self.obj_name).lower() + ".svg"
             )
         )

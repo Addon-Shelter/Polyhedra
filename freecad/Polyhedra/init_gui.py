@@ -48,16 +48,18 @@ import os
 import FreeCAD
 import FreeCADGui
 
-import pyramids_utils
+from FreeCAD import Gui
+
+from .pyramids_utils import getWorkbenchFolder
 
 # Add translations path
 FreeCADGui.addLanguagePath(
-    os.path.join(pyramids_utils.getWorkbenchFolder(), "Resources", "Translations")
+    os.path.join(getWorkbenchFolder(), "Resources", "Translations")
 )
 FreeCADGui.updateLocale()
 
 
-class PolyhydronsWorkbench(Workbench):
+class PolyhydronsWorkbench(FreeCAD.Gui.Workbench):
     translate = FreeCAD.Qt.translate
 
     MenuText = translate("Workbench", "Pyramids-and-Polyhedrons")
@@ -66,10 +68,9 @@ class PolyhydronsWorkbench(Workbench):
     )
 
     def __init__(self):
-        import pyramids_utils
 
         self.__class__.Icon = os.path.join(
-            pyramids_utils.getWorkbenchFolder(),
+            getWorkbenchFolder(),
             "Resources",
             "Icons",
             "Pyramids-and-Polyhedrons_workbench_icon.svg",
@@ -77,7 +78,7 @@ class PolyhydronsWorkbench(Workbench):
 
     def Initialize(self):
         """This function is executed when FreeCAD starts"""
-        import polyhedrons # import here all the needed files that create your FreeCAD commands
+        import freecad.Polyhedra.polyhedrons # import here all the needed files that create your FreeCAD commands
         self.list = ["Pyramid","Tetrahedron","Hexahedron","Octahedron","Dodecahedron","Icosahedron","Icosahedron_truncated",
                      "Geodesic_sphere","RegularSolid"] # A list of command names created in the line above
         #self.appendMenu(["An existing Menu","My submenu"],self.list) # appends a submenu to an existing menu
