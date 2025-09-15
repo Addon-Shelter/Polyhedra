@@ -12,9 +12,9 @@ pyramids and polyhedrons:
 
 All these parts are fully scalable and can be adjusted at all time.
 
-<img src="workbench.png">
+<img src = './Resources/Images/Workbench.webp' />
 
-<img src="polyhedrons.png">
+<img src = './Resources/Images/Banner.webp' />
 
 
 # How to use:
