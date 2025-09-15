@@ -4,7 +4,7 @@
 #
 # Create, update and release translation files.
 #
-# Supported locales on FreeCAD <2024-10-09, FreeCADGui.supportedLocales(), total=44>:
+# Supported locales on FreeCAD <2024-10-14, FreeCADGui.supportedLocales(), total=44>:
 # 	{'English': 'en', 'Afrikaans': 'af', 'Arabic': 'ar', 'Basque': 'eu', 'Belarusian': 'be',
 # 	'Bulgarian': 'bg', 'Catalan': 'ca', 'Chinese Simplified': 'zh-CN',
 # 	'Chinese Traditional': 'zh-TW', 'Croatian': 'hr', 'Czech': 'cs', 'Danish': 'da',
@@ -23,7 +23,7 @@
 # 	Arch-based: $ sudo pacman -S qt6-tools python-pyqt6
 # - Make the script executable
 # 	$ chmod +x update_translation.sh
-# - The script has to be executed within the `Resources/Translations` directory.
+# - The script has to be executed within the `freecad/freegrid/resources/translations` directory.
 # 	Executing the script with no flags invokes the help.
 # 	$ ./update_translation.sh
 #
@@ -39,8 +39,8 @@
 # NOTE: WORKFLOW MAINTAINER (CROWDIN)
 # - Execute the script passing the '-U' flag
 # 	$ ./update_translation.sh -U
+# - Once done, download the translated files, copy them to `freecad/freegrid/resources/translations`
 # - Upload the updated file to CrowdIn and wait for translators do their thing ;-)
-# - Once done, download the translated files, copy them to `Resources/Translations`
 # 	and release all the files to update the changes
 # 	$ ./update_translation.sh -R
 #
@@ -65,7 +65,7 @@ is_locale_supported() {
 update_locale() {
 	local locale="$1"
 	local u=${locale:+_} # Conditional underscore
-	FILES="../../{InitGui,polyhedrons}.py"
+	FILES="../../*.py ../../**/*.py"
 
 	# NOTE: Execute the right command depending on:
 	# - if it's a locale file or the main, agnostic one
@@ -74,7 +74,7 @@ update_locale() {
 	if [ "$u" == "" ]; then
 		eval $LUPDATE "$FILES" -ts "${WB}.ts" # locale-agnostic file
 	else
-		eval $LUPDATE "$FILES" -source-language en_US -target-language "${locale//-/_}" \
+		eval $LUPDATE "$FILES" -source-language en -target-language "${locale//-/_}" \
 			-ts "${WB}_${locale}.ts"
 	fi
 }
@@ -97,7 +97,7 @@ LUPDATE=/usr/lib/qt6/bin/lupdate # from Qt6
 # LUPDATE=lupdate                  # from Qt5
 LRELEASE=/usr/lib/qt6/bin/lrelease # from Qt6
 # LRELEASE=lrelease                 # from Qt5
-WB="PandP"
+WB="Polyhedra"
 
 # Enforce underscore on locales
 sed -i '3s/-/_/' ${WB}*.ts
