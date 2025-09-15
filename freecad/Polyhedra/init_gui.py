@@ -43,71 +43,19 @@
 # version 01.08   (2023-08-21)
 # no printing of the workbenchfolders  (issue bij Alex Neufeld)
 
-import os
 
-import FreeCAD
-import FreeCADGui
-
+from os.path import join
 from FreeCAD import Gui
 
-from .Utils.Resources import icon
 from .Utils.Files import getWorkbenchFolder
-from .Shapes import registerCommands
-
-# Add translations path
-FreeCADGui.addLanguagePath(
-    os.path.join(getWorkbenchFolder(), "Resources", "Translations")
-)
-FreeCADGui.updateLocale()
+from .Workbench import PolyhedraWorkbench
 
 
-class PolyhydronsWorkbench(FreeCAD.Gui.Workbench):
-    translate = FreeCAD.Qt.translate
+translations = join(getWorkbenchFolder(),'Resources','Translations')
 
-    MenuText = translate("Workbench", "Pyramids-and-Polyhedrons")
-    ToolTip = translate(
-        "Workbench", "A workbench for generating pyramids, polyhedrons and geodesic spheres"
-    )
+Gui.addLanguagePath(translations)
 
-    def __init__(self):
-
-        self.__class__.Icon = icon('Workbench')
-
-    def Initialize(self):
-        """This function is executed when FreeCAD starts"""
-
-        registerCommands()
-        
-        self.list = ["Pyramid","Tetrahedron","Hexahedron","Octahedron","Dodecahedron","Icosahedron","Icosahedron_truncated",
-                     "Geodesic_sphere","RegularSolid"] # A list of command names created in the line above
-        #self.appendMenu(["An existing Menu","My submenu"],self.list) # appends a submenu to an existing menu
-        QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
-        self.appendToolbar(
-            QT_TRANSLATE_NOOP("Workbench", "Pyramids-and-Polyhedrons"), self.list
-        )  # creates a new toolbar with your commands
-        self.appendMenu(
-            QT_TRANSLATE_NOOP("Workbench", "Pyramids-and-Polyhedrons"), self.list
-        )  # creates a new menu
-
-    def Activated(self):
-        """This function is executed when the workbench is activated"""
-        return
-
-    def Deactivated(self):
-        """This function is executed when the workbench is deactivated"""
-        return
-
-    def ContextMenu(self, recipient):
-        """This is executed whenever the user right-clicks on screen"""
-        # "recipient" will be either "view" or "tree"
-        QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
-        self.appendContextMenu(
-            QT_TRANSLATE_NOOP("Workbench", "Pyramids-and-Polyhedrons"), self.list
-        )  # add commands to the context menu
-
-    def GetClassName(self):
-        # this function is mandatory if this is a full python workbench
-        return "Gui::PythonWorkbench"
+Gui.updateLocale()
 
 
-Gui.addWorkbench(PolyhydronsWorkbench())
+Gui.addWorkbench(PolyhedraWorkbench())
