@@ -1,14 +1,11 @@
 
 
-import FreeCAD
 import Part
 import math
 
-from ..Utils.ViewProviderBox import ViewProviderBox
-from ..Utils.Resources import icon
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import Gui , Qt
+from FreeCAD import Qt
 
 
 translated = Qt.QT_TRANSLATE_NOOP
@@ -64,31 +61,4 @@ class Octahedron:
         shell = Part.makeShell(faces)
         solid = Part.makeSolid(shell)
         obj.Shape = solid
-
-
-class OctahedronCommand:
-
-    def GetResources(self):
-        return {
-            "Pixmap": icon('Shapes/Octahedron') ,
-            "Accel": "Shift+O",
-            "MenuText": translated("Octahedron", "Octahedron"),
-            "ToolTip": translated("Octahedron", "Generate a Octahedron"),
-        }
-
-    def Activated(self):
-        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Octahedron")
-        Octahedron(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Octahedron")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
-
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
 

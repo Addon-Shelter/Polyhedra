@@ -1,21 +1,18 @@
 
 
-import FreeCAD
 import Part
 import math
 
-from ..Utils.ViewProviderBox import ViewProviderBox
-from ..Utils.Resources import icon
 from ..Utils.Vertexes import polygon_Vertexes
 from ..Utils.Geodesic import geodesic_radius2side
 
-from FreeCAD import Base , Gui , Qt
+from FreeCAD import Base , Qt
 
 
 translated = Qt.QT_TRANSLATE_NOOP
 
 
-class Geodesic_sphere:
+class Geodesic_Sphere:
 
     radiusvalue = 0
     divided_by = 2
@@ -140,30 +137,4 @@ class Geodesic_sphere:
         shell = Part.makeShell(faces)
         solid = Part.makeSolid(shell)
         obj.Shape = solid
-
-
-class GeodesicSphereCommand:
-    def GetResources(self):
-        return {
-            "Pixmap": icon('Shapes/Geodesic-Sphere') ,
-            "Accel": "Shift+G",
-            "MenuText": translated("Geodesic_sphere", "Geodesic sphere"),
-            "ToolTip": translated("Geodesic_sphere", "Generate Geodesic Spheres"),
-        }
-
-    def Activated(self):
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GeodesicSphere")
-        Geodesic_sphere(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Geodesic-sphere")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
-
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
 

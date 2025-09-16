@@ -1,7 +1,7 @@
 
 
 from .Utils.Resources import icon
-from .Shapes import registerCommands
+from .Commands import registerCommands
 
 from FreeCAD import Gui , Qt
 

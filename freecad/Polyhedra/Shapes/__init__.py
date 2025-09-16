@@ -1,25 +1,10 @@
 
-from .Icosahedron_Truncated import IcosahedronTrCommand
-from .Geodesic_Sphere import GeodesicSphereCommand
-from .Dodecahedron import DodecahedronCommand
-from .RegularSolid import RegularSolidCommand
-from .Icosahedron import IcosahedronCommand
-from .Tetrahedron import TetrahedronCommand
-from .Hexahedron import HexahedronCommand
-from .Octahedron import OctahedronCommand
-from .Pyramid import PyramidCommand
-
-from FreeCAD import Gui
-
-
-def registerCommands ():
-    
-    Gui.addCommand('Icosahedron_truncated',IcosahedronTrCommand())
-    Gui.addCommand('Geodesic_sphere',GeodesicSphereCommand())
-    Gui.addCommand('RegularSolid',RegularSolidCommand())
-    Gui.addCommand('Dodecahedron',DodecahedronCommand())
-    Gui.addCommand('Icosahedron',IcosahedronCommand())
-    Gui.addCommand('Tetrahedron',TetrahedronCommand())
-    Gui.addCommand('Hexahedron',HexahedronCommand())
-    Gui.addCommand('Octahedron',OctahedronCommand())
-    Gui.addCommand('Pyramid',PyramidCommand())
+from .Icosahedron_Truncated import Icosahedron_Truncated
+from .Geodesic_Sphere import Geodesic_Sphere
+from .Dodecahedron import Dodecahedron
+from .RegularSolid import RegularSolid
+from .Icosahedron import Icosahedron
+from .Tetrahedron import Tetrahedron
+from .Hexahedron import Hexahedron
+from .Octahedron import Octahedron
+from .Pyramid import Pyramid
