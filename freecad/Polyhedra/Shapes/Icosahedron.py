@@ -1,17 +1,17 @@
 
 
-import FreeCADGui
 import FreeCAD
 import Part
 import math
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
-from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Vertexes import polygon_Vertexes
+
+from FreeCAD import Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 class Icosahedron:
@@ -23,13 +23,13 @@ class Icosahedron:
             "App::PropertyLength",
             "Radius",
             "Icosahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the icosahedron"),
+            translated("App::Property", "Radius of the icosahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Icosahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the icosahedron"),
+            translated("App::Property", "Sidelength of the icosahedron"),
         )
         obj.Proxy = self
 
@@ -61,8 +61,8 @@ class Icosahedron:
         faces = []
 
         vertex_bottom = (0,0,-radius)
-        vertexes_low = horizontal_regular_polygon_vertexes(5,radius2, -height)
-        vertexes_high = horizontal_regular_polygon_vertexes(5,radius2, height, math.pi/5)
+        vertexes_low = polygon_Vertexes(5,radius2, -height)
+        vertexes_high = polygon_Vertexes(5,radius2, height, math.pi/5)
         vertex_top = (0,0,radius)
 
 
@@ -93,8 +93,8 @@ class IcosahedronCommand:
         return {
             "Pixmap": icon('Shapes/Icosahedron') ,
             "Accel": "Shift+I",
-            "MenuText": QT_TRANSLATE_NOOP("Icosahedron", "Icosahedron"),
-            "ToolTip": QT_TRANSLATE_NOOP("Icosahedron", "Generate a Icosahedron"),
+            "MenuText": translated("Icosahedron", "Icosahedron"),
+            "ToolTip": translated("Icosahedron", "Generate a Icosahedron"),
         }
 
     def Activated(self):
@@ -103,7 +103,7 @@ class IcosahedronCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Icosahedron")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
         return
 
 

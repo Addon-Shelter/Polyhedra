@@ -1,17 +1,17 @@
 
 
-import FreeCADGui
 import FreeCAD
 import Part
 import math
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
-from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Vertexes import polygon_Vertexes
+
+from FreeCAD import Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 class Octahedron:
@@ -23,13 +23,13 @@ class Octahedron:
             "App::PropertyLength",
             "Radius",
             "Octahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the octahedron"),
+            translated("App::Property", "Radius of the octahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Octahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the octahedron"),
+            translated("App::Property", "Sidelength of the octahedron"),
         )
         obj.Proxy = self
 
@@ -47,9 +47,9 @@ class Octahedron:
 
 
         faces = []
-        vertexes_middle = horizontal_regular_polygon_vertexes(4,radius,0)
-        vertexes_bottom = horizontal_regular_polygon_vertexes(1,0,-radius)
-        vertexes_top    = horizontal_regular_polygon_vertexes(1,0,radius)
+        vertexes_middle = polygon_Vertexes(4,radius,0)
+        vertexes_bottom = polygon_Vertexes(1,0,-radius)
+        vertexes_top    = polygon_Vertexes(1,0,radius)
 
         for i in range(4):
             vertexes_side=[vertexes_middle[i],vertexes_middle[i+1],vertexes_top[0],vertexes_middle[i]]
@@ -72,8 +72,8 @@ class OctahedronCommand:
         return {
             "Pixmap": icon('Shapes/Octahedron') ,
             "Accel": "Shift+O",
-            "MenuText": QT_TRANSLATE_NOOP("Octahedron", "Octahedron"),
-            "ToolTip": QT_TRANSLATE_NOOP("Octahedron", "Generate a Octahedron"),
+            "MenuText": translated("Octahedron", "Octahedron"),
+            "ToolTip": translated("Octahedron", "Generate a Octahedron"),
         }
 
     def Activated(self):
@@ -82,7 +82,7 @@ class OctahedronCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Octahedron")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
         return
 
 

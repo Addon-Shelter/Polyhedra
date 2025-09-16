@@ -1,18 +1,16 @@
 
 
-import FreeCADGui
 import FreeCAD
 import Part
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
 from ..Utils.Other import createSolid
 
-from FreeCAD import Vector
+from FreeCAD import Vector , Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 # The following two classes "RegularSolid" and "RegularSolidCommand" make the abilities of the "createSolid" function above
@@ -92,37 +90,37 @@ class RegularSolid:
             "App::PropertyLength",
             "Midradius",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching closest edge"),
+            translated("App::Property", "Radius of inscribed sphere touching closest edge"),
         ).Midradius = midradius
         obj.addProperty(
             "App::PropertyLength",
             "Inradius",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching closest face"),
+            translated("App::Property", "Radius of inscribed sphere touching closest face"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Circumradius",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching furthest vertex"),
+            translated("App::Property", "Radius of inscribed sphere touching furthest vertex"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "LongEdge",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Length of longest edge"),
+            translated("App::Property", "Length of longest edge"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "ShortEdge",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Length of shortest edge"),
+            translated("App::Property", "Length of shortest edge"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "KeepSize",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "What drives solid size when changing construction"),
+            translated("App::Property", "What drives solid size when changing construction"),
         )
         obj.KeepSize = self.sizenames
         obj.KeepSize = self.sizenames[0]
@@ -130,7 +128,7 @@ class RegularSolid:
             "App::PropertyEnumeration",
             "Source",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Initiating body"),
+            translated("App::Property", "Initiating body"),
         )
         obj.Source = [e[1] for e in self.enums["Source"]]
         obj.Source = [e[1] for e in self.enums["Source"] if len(e) >= 4 and e[3]][0]
@@ -138,19 +136,19 @@ class RegularSolid:
             "App::PropertyFloat",
             "Vtrunc",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Amount of vertex truncation/elongation"),
+            translated("App::Property", "Amount of vertex truncation/elongation"),
         ).Vtrunc = 0.0
         obj.addProperty(
             "App::PropertyFloat",
             "Etrunc",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Amount of edge truncation"),
+            translated("App::Property", "Amount of edge truncation"),
         ).Etrunc = 0.0
         obj.addProperty(
             "App::PropertyEnumeration",
             "Snub",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Create the snub version"),
+            translated("App::Property", "Create the snub version"),
         )
         obj.Snub = [e[1] for e in self.enums["Snub"]]
         obj.Snub = [e[1] for e in self.enums["Snub"] if len(e) >= 4 and e[3]][0]
@@ -158,13 +156,13 @@ class RegularSolid:
             "App::PropertyBool",
             "Dual",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Create the dual of the current solid"),
+            translated("App::Property", "Create the dual of the current solid"),
         ).Dual = False
         obj.addProperty(
             "App::PropertyEnumeration",
             "Presets",
             "RegularSolid",
-            QT_TRANSLATE_NOOP("App::Property", "Preset parameters for some hard names"),
+            translated("App::Property", "Preset parameters for some hard names"),
         )
         obj.Presets = [e[1] for e in self.enums["Presets"]]
         obj.Presets = [e[1] for e in self.enums["Presets"] if len(e) >= 4 and e[3]][0]
@@ -240,8 +238,8 @@ class RegularSolidCommand:
         return {
             "Pixmap": icon('Shapes/Regular-Solid') ,
             "Accel": "Shift+R",
-            "MenuText": QT_TRANSLATE_NOOP("RegularSolid", "Regular Solid"),
-            "ToolTip": QT_TRANSLATE_NOOP("RegularSolid", "Generate a Regular Solid"),
+            "MenuText": translated("RegularSolid", "Regular Solid"),
+            "ToolTip": translated("RegularSolid", "Generate a Regular Solid"),
         }
 
     def Activated(self):
@@ -250,7 +248,7 @@ class RegularSolidCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Regular-Solid")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
 
     def IsActive(self):
         return FreeCAD.ActiveDocument!=None

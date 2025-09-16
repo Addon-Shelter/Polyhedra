@@ -51,14 +51,6 @@
 # icosahedron_truncated : now radius of the result, not of the base icosahedron
 
 
-import FreeCAD
-
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
-
-
-# ===========================================================================
-
-
 # The following code section provides an object that can be parameterised to produce any of the platonic, archimedean and catalan
 # solids, and more, by starting with one of the five platonic solids and then truncating vertices respectively edges.
 

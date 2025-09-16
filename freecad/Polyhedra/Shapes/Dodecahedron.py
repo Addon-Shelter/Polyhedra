@@ -1,15 +1,16 @@
 
-import FreeCADGui
 import FreeCAD
 import Part
 import math
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
-from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Vertexes import polygon_Vertexes
+
+from FreeCAD import Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 class Dodecahedron:
@@ -21,13 +22,13 @@ class Dodecahedron:
             "App::PropertyLength",
             "Radius",
             "Dodecahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the dodecahedron"),
+            translated("App::Property", "Radius of the dodecahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Dodecahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the dodecahedron"),
+            translated("App::Property", "Sidelength of the dodecahedron"),
         )
         obj.Proxy = self
 
@@ -64,10 +65,10 @@ class Dodecahedron:
 
 
 
-        vertexes_bottom = horizontal_regular_polygon_vertexes(5,radius1,-r)
-        vertexes_low = horizontal_regular_polygon_vertexes(5,radius2, -r + h2)
-        vertexes_high = horizontal_regular_polygon_vertexes(5,radius2, -r + h5h,  math.pi/5)
-        vertexes_top = horizontal_regular_polygon_vertexes(5,radius1, r, math.pi/5)
+        vertexes_bottom = polygon_Vertexes(5,radius1,-r)
+        vertexes_low = polygon_Vertexes(5,radius2, -r + h2)
+        vertexes_high = polygon_Vertexes(5,radius2, -r + h5h,  math.pi/5)
+        vertexes_top = polygon_Vertexes(5,radius1, r, math.pi/5)
 
         polygon_bottom = Part.makePolygon(vertexes_bottom)
         face_bottom = Part.Face(polygon_bottom)
@@ -97,8 +98,8 @@ class DodecahedronCommand:
         return {
             "Pixmap": icon('Shapes/Dodecahedron') ,
             "Accel": "Shift+D",
-            "MenuText": QT_TRANSLATE_NOOP("Dodecahedron", "Dodecahedron"),
-            "ToolTip": QT_TRANSLATE_NOOP("Dodecahedron", "Generate a Dodecahedron"),
+            "MenuText": translated("Dodecahedron", "Dodecahedron"),
+            "ToolTip": translated("Dodecahedron", "Generate a Dodecahedron"),
         }
 
     def Activated(self):
@@ -107,7 +108,7 @@ class DodecahedronCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Dodecahedron")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
         return
 
 

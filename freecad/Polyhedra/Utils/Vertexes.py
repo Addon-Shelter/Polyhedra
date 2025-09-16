@@ -2,31 +2,59 @@
 from math import cos , sin , pi
 
 
-def horizontal_regular_polygon_vertexes(sidescount,radius,z, startangle = 0):
+def polygon_Vertexes (
+    sides : int ,
+    radius : float ,
+    z : float ,
+    startangle : float = 0
+):
+
+    if radius == 0:
+        return [ ( 0 , 0 , z ) ]
+
     vertexes = []
-    if radius != 0 :
-        for i in range(0,sidescount+1):
-            angle = 2 * pi * i / sidescount + pi + startangle
-            vertex = (radius * cos(angle), radius * sin(angle), z)
-            vertexes.append(vertex)
-    else:
-        vertex = (0,0,z)
+
+    for index in range(0, sides + 1 ):
+
+        angle = 2 * pi * index / sides + pi + startangle
+
+        x = radius * cos(angle)
+        y = radius * sin(angle)
+
+        vertex = ( x , y , z )
+
         vertexes.append(vertex)
+
     return vertexes
 
 
 
-def horizontal_regular_pyramid_vertexes(sidescount,radius,z, anglez = 0): # anglez in degrees
+def pyramid_Vertexes (
+    sides : int ,
+    radius : float ,
+    z : float ,
+    anglez : float = 0 # Degrees
+):
+
+    if radius == 0:
+        return [ ( 0 , 0 , z ) ]
+
+    odd = ( sides % 2 ) != 0
+
     vertexes = []
-    odd = 0
-    if (sidescount % 2) == 0:
-        odd = 1
-    if radius != 0 :
-        for i in range(0,sidescount+1):
-            angle = 2 * pi * i / sidescount + (pi * (odd/sidescount + 1/2)) + anglez * pi / 180
-            vertex = (radius * cos(angle), radius * sin(angle), z)
-            vertexes.append(vertex)
-    else:
-        vertex = (0,0,z)
+
+    for index in range(0, sides + 1 ):
+
+        angle =                                 \
+            ( pi * ( odd / sides + 0.5 ) ) +    \
+            2 * pi * index / sides +            \
+            anglez * pi / 180
+
+        x = radius * cos(angle)
+        y = radius * sin(angle)
+
+        vertex = ( x , y , z )
+
         vertexes.append(vertex)
+
     return vertexes

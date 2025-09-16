@@ -1,17 +1,17 @@
 
 
-import FreeCADGui
 import FreeCAD
 import Part
 import math
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
-from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Vertexes import polygon_Vertexes
+
+from FreeCAD import Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 class Hexahedron:
@@ -23,13 +23,13 @@ class Hexahedron:
             "App::PropertyLength",
             "Radius",
             "Hexahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the hexahedron"),
+            translated("App::Property", "Radius of the hexahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Hexahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the hexahedron"),
+            translated("App::Property", "Sidelength of the hexahedron"),
         )
         obj.Proxy = self
 
@@ -47,8 +47,8 @@ class Hexahedron:
             side = obj.Side
 
         faces = []
-        vertexes_bottom = horizontal_regular_polygon_vertexes(4,math.sqrt(side ** 2 / 2),- side/2, math.pi/4)
-        vertexes_top    = horizontal_regular_polygon_vertexes(4,math.sqrt(side ** 2 / 2), side/2, math.pi/4)
+        vertexes_bottom = polygon_Vertexes(4,math.sqrt(side ** 2 / 2),- side/2, math.pi/4)
+        vertexes_top    = polygon_Vertexes(4,math.sqrt(side ** 2 / 2), side/2, math.pi/4)
 
         for i in range(4):
             vertexes_side=[vertexes_bottom[i],vertexes_bottom[i+1],vertexes_top[i+1],vertexes_top[i],vertexes_bottom[i]]
@@ -72,8 +72,8 @@ class HexahedronCommand:
         return {
             "Pixmap": icon('Shapes/Hexahedron') ,
             "Accel": "Shift+H",
-            "MenuText": QT_TRANSLATE_NOOP("Hexahedron", "Hexahedron"),
-            "ToolTip": QT_TRANSLATE_NOOP("Hexahedron", "Generate a Hexahedron"),
+            "MenuText": translated("Hexahedron", "Hexahedron"),
+            "ToolTip": translated("Hexahedron", "Generate a Hexahedron"),
         }
 
     def Activated(self):
@@ -82,7 +82,7 @@ class HexahedronCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Hexahedron")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
         return
 
     def IsActive(self):

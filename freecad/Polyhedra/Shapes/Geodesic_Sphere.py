@@ -1,20 +1,18 @@
 
 
-import FreeCADGui
 import FreeCAD
 import Part
 import math
-import os
 
 from ..Utils.ViewProviderBox import ViewProviderBox
 from ..Utils.Resources import icon
-from ..Utils.Vertexes import horizontal_regular_polygon_vertexes
+from ..Utils.Vertexes import polygon_Vertexes
 from ..Utils.Geodesic import geodesic_radius2side
 
-from FreeCAD import Base
+from FreeCAD import Base , Gui , Qt
 
 
-QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
+translated = Qt.QT_TRANSLATE_NOOP
 
 
 class Geodesic_sphere:
@@ -28,19 +26,19 @@ class Geodesic_sphere:
             "App::PropertyLength",
             "Radius",
             "Geodesic",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the sphere"),
+            translated("App::Property", "Radius of the sphere"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Geodesic",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the triangles (approximative!)"),
+            translated("App::Property", "Sidelength of the triangles (approximative!)"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "DividedBy",
             "Geodesic",
-            QT_TRANSLATE_NOOP(
+            translated(
                 "Properties tooltips",
                 "The sides of the basic polyhedron are divided in ... (value 1 to 10)",
             ),
@@ -123,8 +121,8 @@ class Geodesic_sphere:
         faces = []
 
         vertex_bottom = (0,0,-radius)
-        vertexes_low = horizontal_regular_polygon_vertexes(5,radius2, -height)
-        vertexes_high = horizontal_regular_polygon_vertexes(5,radius2, height, math.pi/5)
+        vertexes_low = polygon_Vertexes(5,radius2, -height)
+        vertexes_high = polygon_Vertexes(5,radius2, height, math.pi/5)
         vertex_top = (0,0,radius)
 
         for i in range(5):
@@ -149,8 +147,8 @@ class GeodesicSphereCommand:
         return {
             "Pixmap": icon('Shapes/Geodesic-Sphere') ,
             "Accel": "Shift+G",
-            "MenuText": QT_TRANSLATE_NOOP("Geodesic_sphere", "Geodesic sphere"),
-            "ToolTip": QT_TRANSLATE_NOOP("Geodesic_sphere", "Generate Geodesic Spheres"),
+            "MenuText": translated("Geodesic_sphere", "Geodesic sphere"),
+            "ToolTip": translated("Geodesic_sphere", "Generate Geodesic Spheres"),
         }
 
     def Activated(self):
@@ -159,7 +157,7 @@ class GeodesicSphereCommand:
         #obj.ViewObject.Proxy=0
         ViewProviderBox(obj.ViewObject, "Geodesic-sphere")
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.SendMsgToActiveView("ViewFit")
+        Gui.SendMsgToActiveView("ViewFit")
         return
 
 
