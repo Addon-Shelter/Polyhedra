@@ -32,9 +32,9 @@ class PolyhedraWorkbench ( Gui.Workbench ):
             'Octahedron' ,
             'Dodecahedron' ,
             'Icosahedron' ,
-            'Icosahedron_truncated' ,
-            'Geodesic_sphere' ,
-            'RegularSolid'
+            'Icosahedron-Truncated' ,
+            'Geodesic-Sphere' ,
+            'Regular-Solid'
         ]
 
         title = translatable('Workbench','Pyramids-and-Polyhedrons')

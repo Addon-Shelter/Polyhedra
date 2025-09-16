@@ -13,7 +13,7 @@ translated = Qt.QT_TRANSLATE_NOOP
 # The following two classes "RegularSolid" and "RegularSolidCommand" make the abilities of the "createSolid" function above
 # available to FreeCAD. They also borrow somewhat on the add_mesh_solid.py referenced above:
 
-class RegularSolid:
+class Regular_Solid:
 
     enums = {
     "Source": (("4", "Tetrahedron", ""),
