@@ -39,7 +39,7 @@
 # NOTE: WORKFLOW MAINTAINER (CROWDIN)
 # - Execute the script passing the '-U' flag
 # 	$ ./update_translation.sh -U
-# - Once done, download the translated files, copy them to `freecad/freegrid/resources/translations`
+# - Once done, download the QT_TRANSLATE_NOOP files, copy them to `freecad/freegrid/resources/translations`
 # - Upload the updated file to CrowdIn and wait for translators do their thing ;-)
 # 	and release all the files to update the changes
 # 	$ ./update_translation.sh -R

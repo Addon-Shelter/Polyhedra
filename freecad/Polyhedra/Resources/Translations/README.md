@@ -92,7 +92,7 @@ This will update the `.qm` file for your language (Japanese in this case).
 
 ## Sending translations
 
-Now you can contribute your translated `.ts` file to **{{cookiecutter.workbench_module_name}}** repository,
+Now you can contribute your QT_TRANSLATE_NOOP `.ts` file to **{{cookiecutter.workbench_module_name}}** repository,
 also include the `.qm` file.
 
 <{{cookiecutter.workbench_project_url}}>

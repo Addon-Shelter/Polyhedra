@@ -7,7 +7,7 @@ from ..Utils.Vertexes import polygon_Vertexes
 from FreeCAD import Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class Dodecahedron:
@@ -19,13 +19,13 @@ class Dodecahedron:
             "App::PropertyLength",
             "Radius",
             "Dodecahedron",
-            translated("App::Property", "Radius of the dodecahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the dodecahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Dodecahedron",
-            translated("App::Property", "Sidelength of the dodecahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the dodecahedron"),
         )
         obj.Proxy = self
 

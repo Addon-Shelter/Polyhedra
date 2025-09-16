@@ -9,7 +9,7 @@ from ..Utils.Vertexes import pyramid_Vertexes
 from FreeCAD import Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class Pyramid:
@@ -35,49 +35,49 @@ class Pyramid:
             "App::PropertyLength",
             "Radius1",
             "Pyramid",
-            translated("App::Property", "Radius of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the pyramid"),
         ).Radius1 = radius_bottom
 
         obj.addProperty(
             "App::PropertyLength",
             "Radius2",
             "Pyramid",
-            translated("App::Property", "Radius of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the pyramid"),
         ).Radius2 = radius_top
 
         obj.addProperty(
             "App::PropertyLength",
             "Height",
             "Pyramid",
-            translated("App::Property", "Height of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Height of the pyramid"),
         ).Height = height
 
         obj.addProperty(
             "App::PropertyInteger",
             "Sidescount",
             "Pyramid",
-            translated("App::Property", "Sidescount of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidescount of the pyramid"),
         ).Sidescount = sidescount
 
         obj.addProperty(
             "App::PropertyLength",
             "Sidelength1",
             "Pyramid",
-            translated("App::Property", "Sidelength1 of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength1 of the pyramid"),
         )
 
         obj.addProperty(
             "App::PropertyLength",
             "Sidelength2",
             "Pyramid",
-            translated("App::Property", "Sidelength2 of the pyramid"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength2 of the pyramid"),
         )
 
         obj.addProperty(
             "App::PropertyAngle",
             "Z_rotation",
             "Pyramid",
-            translated("App::Property", "alfa angle around Z"),
+            QT_TRANSLATE_NOOP("App::Property", "alfa angle around Z"),
         ).Z_rotation = angz
 
         obj.Proxy = self

@@ -8,7 +8,7 @@ from ..Utils.Vertexes import polygon_Vertexes
 from FreeCAD import Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class Hexahedron:
@@ -20,13 +20,13 @@ class Hexahedron:
             "App::PropertyLength",
             "Radius",
             "Hexahedron",
-            translated("App::Property", "Radius of the hexahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the hexahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Hexahedron",
-            translated("App::Property", "Sidelength of the hexahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the hexahedron"),
         )
         obj.Proxy = self
 

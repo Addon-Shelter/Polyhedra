@@ -8,7 +8,7 @@ from ..Utils.Vertexes import polygon_Vertexes
 from FreeCAD import Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class Icosahedron:
@@ -20,13 +20,13 @@ class Icosahedron:
             "App::PropertyLength",
             "Radius",
             "Icosahedron",
-            translated("App::Property", "Radius of the icosahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the icosahedron"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Icosahedron",
-            translated("App::Property", "Sidelength of the icosahedron"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the icosahedron"),
         )
         obj.Proxy = self
 

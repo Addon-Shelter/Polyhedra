@@ -6,14 +6,13 @@ from .Commands import registerCommands
 from FreeCAD import Gui , Qt
 
 
-translatable = Qt.QT_TRANSLATE_NOOP
-translate = Qt.translate
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class PolyhedraWorkbench ( Gui.Workbench ):
 
-    MenuText = translate('Workbench','Pyramids-and-Polyhedrons')
-    ToolTip = translate('Workbench','A workbench for generating pyramids, polyhedrons and geodesic spheres')
+    MenuText = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
+    ToolTip = QT_TRANSLATE_NOOP('Workbench','A workbench for generating pyramids, polyhedrons and geodesic spheres')
 
     def __init__ ( self ):
         self.__class__.Icon = icon('Workbench')
@@ -37,7 +36,7 @@ class PolyhedraWorkbench ( Gui.Workbench ):
             'Regular-Solid'
         ]
 
-        title = translatable('Workbench','Pyramids-and-Polyhedrons')
+        title = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
 
         self.appendToolbar(title,self.list)
         self.appendMenu(title,self.list)
@@ -45,7 +44,7 @@ class PolyhedraWorkbench ( Gui.Workbench ):
 
     def ContextMenu ( self , recipient ):
 
-        title = translatable('Workbench','Pyramids-and-Polyhedrons')
+        title = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
 
         self.appendContextMenu(title,self.list)
 

@@ -7,7 +7,7 @@ from ..Utils.Other import createSolid
 from FreeCAD import Vector , Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 # The following two classes "RegularSolid" and "RegularSolidCommand" make the abilities of the "createSolid" function above
@@ -87,37 +87,37 @@ class Regular_Solid:
             "App::PropertyLength",
             "Midradius",
             "RegularSolid",
-            translated("App::Property", "Radius of inscribed sphere touching closest edge"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching closest edge"),
         ).Midradius = midradius
         obj.addProperty(
             "App::PropertyLength",
             "Inradius",
             "RegularSolid",
-            translated("App::Property", "Radius of inscribed sphere touching closest face"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching closest face"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "Circumradius",
             "RegularSolid",
-            translated("App::Property", "Radius of inscribed sphere touching furthest vertex"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of inscribed sphere touching furthest vertex"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "LongEdge",
             "RegularSolid",
-            translated("App::Property", "Length of longest edge"),
+            QT_TRANSLATE_NOOP("App::Property", "Length of longest edge"),
         )
         obj.addProperty(
             "App::PropertyLength",
             "ShortEdge",
             "RegularSolid",
-            translated("App::Property", "Length of shortest edge"),
+            QT_TRANSLATE_NOOP("App::Property", "Length of shortest edge"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
             "KeepSize",
             "RegularSolid",
-            translated("App::Property", "What drives solid size when changing construction"),
+            QT_TRANSLATE_NOOP("App::Property", "What drives solid size when changing construction"),
         )
         obj.KeepSize = self.sizenames
         obj.KeepSize = self.sizenames[0]
@@ -125,7 +125,7 @@ class Regular_Solid:
             "App::PropertyEnumeration",
             "Source",
             "RegularSolid",
-            translated("App::Property", "Initiating body"),
+            QT_TRANSLATE_NOOP("App::Property", "Initiating body"),
         )
         obj.Source = [e[1] for e in self.enums["Source"]]
         obj.Source = [e[1] for e in self.enums["Source"] if len(e) >= 4 and e[3]][0]
@@ -133,19 +133,19 @@ class Regular_Solid:
             "App::PropertyFloat",
             "Vtrunc",
             "RegularSolid",
-            translated("App::Property", "Amount of vertex truncation/elongation"),
+            QT_TRANSLATE_NOOP("App::Property", "Amount of vertex truncation/elongation"),
         ).Vtrunc = 0.0
         obj.addProperty(
             "App::PropertyFloat",
             "Etrunc",
             "RegularSolid",
-            translated("App::Property", "Amount of edge truncation"),
+            QT_TRANSLATE_NOOP("App::Property", "Amount of edge truncation"),
         ).Etrunc = 0.0
         obj.addProperty(
             "App::PropertyEnumeration",
             "Snub",
             "RegularSolid",
-            translated("App::Property", "Create the snub version"),
+            QT_TRANSLATE_NOOP("App::Property", "Create the snub version"),
         )
         obj.Snub = [e[1] for e in self.enums["Snub"]]
         obj.Snub = [e[1] for e in self.enums["Snub"] if len(e) >= 4 and e[3]][0]
@@ -153,13 +153,13 @@ class Regular_Solid:
             "App::PropertyBool",
             "Dual",
             "RegularSolid",
-            translated("App::Property", "Create the dual of the current solid"),
+            QT_TRANSLATE_NOOP("App::Property", "Create the dual of the current solid"),
         ).Dual = False
         obj.addProperty(
             "App::PropertyEnumeration",
             "Presets",
             "RegularSolid",
-            translated("App::Property", "Preset parameters for some hard names"),
+            QT_TRANSLATE_NOOP("App::Property", "Preset parameters for some hard names"),
         )
         obj.Presets = [e[1] for e in self.enums["Presets"]]
         obj.Presets = [e[1] for e in self.enums["Presets"] if len(e) >= 4 and e[3]][0]

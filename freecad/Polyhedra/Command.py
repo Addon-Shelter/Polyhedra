@@ -3,44 +3,46 @@ import FreeCAD
 
 from .Utils.ViewProviderBox import ViewProviderBox
 from .Utils.Resources import icon
+from .Locale import Shapes
 
 from FreeCAD import Gui , Qt
 from typing import Any
 
 
-translate = Qt.translate
+t = Qt.QT_TRANSLATE_NOOP
+
+Tooltip = t('Command.Tooltip','Generate a {{ Name }}')
 
 
 class Command:
 
     shortcut : str
     shape : Any
-    name : str
     icon : str
-    key : str
+    name : str
 
     def __init__ (
         self ,
-        name : str ,
         icon : str ,
         shape : object ,
         shortcut : str ,
         key : str
     ):
+
         self.shortcut = shortcut
         self.shape = shape
-        self.name = name
         self.icon = icon
-        self.key = key
+
+        self.name = Shapes[ key ]
 
 
     def GetResources ( self ):
 
-        key = self.key
+        tooltip = Tooltip.replace(r'{{ Name }}',self.name)
 
         return {
-            'MenuText' : translate(key,key) ,
-            'ToolTip' : translate(key,f'Generate a { self.name }') ,
+            'MenuText' : self.name ,
+            'ToolTip' : tooltip ,
             'Pixmap' : icon(f'Shapes/{ self.icon }') ,
             'Accel' : self.shortcut
         }

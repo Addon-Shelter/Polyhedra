@@ -9,7 +9,7 @@ from ..Utils.Geodesic import geodesic_radius2side
 from FreeCAD import Base , Qt
 
 
-translated = Qt.QT_TRANSLATE_NOOP
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 class Geodesic_Sphere:
@@ -23,19 +23,19 @@ class Geodesic_Sphere:
             "App::PropertyLength",
             "Radius",
             "Geodesic",
-            translated("App::Property", "Radius of the sphere"),
+            QT_TRANSLATE_NOOP("App::Property", "Radius of the sphere"),
         ).Radius = radius
         obj.addProperty(
             "App::PropertyLength",
             "Side",
             "Geodesic",
-            translated("App::Property", "Sidelength of the triangles (approximative!)"),
+            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the triangles (approximative!)"),
         )
         obj.addProperty(
             "App::PropertyInteger",
             "DividedBy",
             "Geodesic",
-            translated(
+            QT_TRANSLATE_NOOP(
                 "Properties tooltips",
                 "The sides of the basic polyhedron are divided in ... (value 1 to 10)",
             ),
