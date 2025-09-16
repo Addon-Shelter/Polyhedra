@@ -13,27 +13,29 @@ translated = Qt.QT_TRANSLATE_NOOP
 
 
 class GeodesicSphereCommand:
-    def GetResources(self):
+
+    def GetResources ( self ):
         return {
-            "Pixmap": icon('Shapes/Geodesic-Sphere') ,
-            "Accel": "Shift+G",
-            "MenuText": translated("Geodesic_sphere", "Geodesic sphere"),
-            "ToolTip": translated("Geodesic_sphere", "Generate Geodesic Spheres"),
+            'MenuText' : translated('Geodesic_sphere','Geodesic sphere') ,
+            'ToolTip' : translated('Geodesic_sphere','Generate Geodesic Spheres') ,
+            'Pixmap' : icon('Shapes/Geodesic-Sphere') ,
+            'Accel' : 'Shift+G'
         }
 
-    def Activated(self):
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython", "GeodesicSphere")
-        Geodesic_Sphere(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Geodesic-sphere")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
+
+    def Activated ( self ):
+
+        document = FreeCAD.ActiveDocument
+
+        object = document.addObject('Part::FeaturePython','GeodesicSphere')
+
+        Geodesic_Sphere(object)
+        ViewProviderBox(object.ViewObject,'Geodesic-sphere')
+
+        document.recompute()
+        Gui.SendMsgToActiveView('ViewFit')
 
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 

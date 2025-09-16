@@ -13,27 +13,29 @@ translated = Qt.QT_TRANSLATE_NOOP
 
 
 class IcosahedronCommand:
-    def GetResources(self):
+
+    def GetResources ( self ):
         return {
-            "Pixmap": icon('Shapes/Icosahedron') ,
-            "Accel": "Shift+I",
-            "MenuText": translated("Icosahedron", "Icosahedron"),
-            "ToolTip": translated("Icosahedron", "Generate a Icosahedron"),
+            'MenuText' : translated('Icosahedron','Icosahedron') ,
+            'ToolTip' : translated('Icosahedron','Generate a Icosahedron') ,
+            'Pixmap' : icon('Shapes/Icosahedron') ,
+            'Accel' : 'Shift+I'
         }
 
-    def Activated(self):
-        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Icosahedron")
-        Icosahedron(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Icosahedron")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
+
+    def Activated ( self ):
+
+        document = FreeCAD.ActiveDocument
+
+        object = document.addObject('Part::FeaturePython','Icosahedron')
+
+        Icosahedron(object)
+        ViewProviderBox(object.ViewObject, 'Icosahedron')
+
+        document.recompute()
+        Gui.SendMsgToActiveView('ViewFit')
 
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 

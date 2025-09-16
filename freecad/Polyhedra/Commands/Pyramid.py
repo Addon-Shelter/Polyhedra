@@ -22,6 +22,7 @@ class PyramidCommand ():
             'Accel' : 'Shift+P'
         }
 
+
     def Activated ( self ):
 
         document = FreeCAD.ActiveDocument
@@ -38,9 +39,7 @@ class PyramidCommand ():
 
         Gui.SendMsgToActiveView('ViewFit')
 
-        return
 
-
-    def IsActive(self):
-        return not not FreeCAD.ActiveDocument
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 

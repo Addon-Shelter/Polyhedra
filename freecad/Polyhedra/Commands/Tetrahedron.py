@@ -14,27 +14,29 @@ translated = Qt.QT_TRANSLATE_NOOP
 
 class TetrahedronCommand:
 
-    def GetResources(self):
+    def GetResources ( self ):
         return {
-            "Pixmap": icon('Shapes/Tetrahedron') ,
-            "Accel": "Shift+T",
-            "MenuText": translated("Tetrahedron", "Tetrahedron"),
-            "ToolTip": translated("Tetrahedron", "Generate a Tetrahedron"),
+            'MenuText' : translated('Tetrahedron','Tetrahedron') ,
+            'ToolTip' : translated('Tetrahedron','Generate a Tetrahedron') ,
+            'Pixmap' : icon('Shapes/Tetrahedron') ,
+            'Accel' : 'Shift+T'
         }
 
-    def Activated(self):
-        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Tetrahedron")
-        Tetrahedron(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Tetrahedron")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
+    def Activated ( self ):
+
+        document = FreeCAD.ActiveDocument
+
+        object = document.addObject('Part::FeaturePython','Tetrahedron')
+
+        Tetrahedron(object)
+        ViewProviderBox(object.ViewObject, 'Tetrahedron')
+
+        document.recompute()
+        Gui.SendMsgToActiveView('ViewFit')
+
+
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 
 

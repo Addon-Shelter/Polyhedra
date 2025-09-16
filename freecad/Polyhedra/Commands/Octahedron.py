@@ -14,27 +14,28 @@ translated = Qt.QT_TRANSLATE_NOOP
 
 class OctahedronCommand:
 
-    def GetResources(self):
+    def GetResources ( self ):
         return {
-            "Pixmap": icon('Shapes/Octahedron') ,
-            "Accel": "Shift+O",
-            "MenuText": translated("Octahedron", "Octahedron"),
-            "ToolTip": translated("Octahedron", "Generate a Octahedron"),
+            'MenuText' : translated('Octahedron','Octahedron') ,
+            'ToolTip' : translated('Octahedron','Generate a Octahedron') ,
+            'Pixmap' : icon('Shapes/Octahedron') ,
+            'Accel' : 'Shift+O'
         }
 
+
     def Activated(self):
-        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Octahedron")
-        Octahedron(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Octahedron")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
+
+        document = FreeCAD.ActiveDocument
+
+        object = document.addObject('Part::FeaturePython','Octahedron')
+
+        Octahedron(object)
+        ViewProviderBox(object.ViewObject,'Octahedron')
+
+        document.recompute()
+        Gui.SendMsgToActiveView('ViewFit')
 
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 

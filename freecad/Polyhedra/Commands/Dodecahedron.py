@@ -12,27 +12,30 @@ translated = Qt.QT_TRANSLATE_NOOP
 
 
 class DodecahedronCommand:
-    def GetResources(self):
+
+    def GetResources ( self ):
         return {
-            "Pixmap": icon('Shapes/Dodecahedron') ,
-            "Accel": "Shift+D",
-            "MenuText": translated("Dodecahedron", "Dodecahedron"),
-            "ToolTip": translated("Dodecahedron", "Generate a Dodecahedron"),
+            'MenuText' : translated('Dodecahedron','Dodecahedron') ,
+            'ToolTip' : translated('Dodecahedron','Generate a Dodecahedron') ,
+            'Pixmap' : icon('Shapes/Dodecahedron') ,
+            'Accel' : 'Shift+D'
         }
 
-    def Activated(self):
-        obj=FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Dodecahedron")
-        Dodecahedron(obj)
-        #obj.ViewObject.Proxy=0
-        ViewProviderBox(obj.ViewObject, "Dodecahedron")
-        FreeCAD.ActiveDocument.recompute()
-        Gui.SendMsgToActiveView("ViewFit")
-        return
+
+    def Activated ( self ):
+
+        document = FreeCAD.ActiveDocument
+
+        object = document.addObject('Part::FeaturePython','Dodecahedron')
+
+        Dodecahedron(object)
+        ViewProviderBox(object.ViewObject,'Dodecahedron')
+
+        document.recompute()
+
+        Gui.SendMsgToActiveView('ViewFit')
 
 
-    def IsActive(self):
-        if FreeCAD.ActiveDocument == None:
-               return False
-        else:
-               return True
+    def IsActive ( self ):
+        return FreeCAD.ActiveDocument != None
 
