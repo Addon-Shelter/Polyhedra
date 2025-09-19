@@ -1,59 +1,54 @@
 
+from PySide.QtCore import QTimer
+from FreeCAD import Gui
 
-from .Utils.Resources import icon
-from .Commands import registerCommands
+import PartGui
 
-from FreeCAD import Gui , Qt
-
-
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+print(dir(PartGui))
 
 
-class PolyhedraWorkbench ( Gui.Workbench ):
+timer = QTimer()
+timer.setSingleShot(True)
 
-    MenuText = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
-    ToolTip = QT_TRANSLATE_NOOP('Workbench','A workbench for generating pyramids, polyhedrons and geodesic spheres')
+def extend ():
 
-    def __init__ ( self ):
-        self.__class__.Icon = icon('Workbench')
+    global timer
 
+    workbench = Gui.activeWorkbench()
 
-    def Initialize(self):
+    if not hasattr(workbench,'__Workbench__'):
 
-        registerCommands()
+        print('Not yet loaded')
 
-        # Commands
+        timer.start(1000)
+        return
 
-        self.list = [
-            'Pyramid' ,
-            'Tetrahedron' ,
-            'Hexahedron' ,
-            'Octahedron' ,
-            'Dodecahedron' ,
-            'Icosahedron' ,
-            'Icosahedron-Truncated' ,
-            'Geodesic-Sphere' ,
-            'Regular-Solid'
-        ]
+    if not hasattr(workbench,'name'):
+        return
 
-        title = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
+    name = workbench.name()
 
-        self.appendToolbar(title,self.list)
-        self.appendMenu(title,self.list)
+    if name != 'PartWorkbench':
+        return
 
 
-    def ContextMenu ( self , recipient ):
+    list = [
+        'Pyramid' ,
+        'Tetrahedron' ,
+        'Hexahedron' ,
+        'Octahedron' ,
+        'Dodecahedron' ,
+        'Icosahedron' ,
+        'Icosahedron-Truncated' ,
+        'Geodesic-Sphere' ,
+        'Regular-Solid'
+    ]
 
-        title = QT_TRANSLATE_NOOP('Workbench','Polyhedra')
-
-        self.appendContextMenu(title,self.list)
+    workbench.appendToolbar('Solids-Polyhedra',list)
 
 
-    def GetClassName ( self ):
-        return 'Gui::PythonWorkbench'
+timer.timeout.connect(extend)
 
-    def Deactivated ( self ):
-        pass
 
-    def Activated ( self ):
-        pass
+window = Gui.getMainWindow()
+window.workbenchActivated.connect(extend)

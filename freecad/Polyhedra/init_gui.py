@@ -48,7 +48,7 @@ from os.path import join
 from FreeCAD import Gui
 
 from .Utils.Files import getWorkbenchFolder
-from .Workbench import PolyhedraWorkbench
+from .Commands import registerCommands
 
 
 translations = join(getWorkbenchFolder(),'Resources','Translations')
@@ -57,5 +57,8 @@ Gui.addLanguagePath(translations)
 
 Gui.updateLocale()
 
+registerCommands()
 
-Gui.addWorkbench(PolyhedraWorkbench())
+# Gui.addWorkbenchManipulator(PolyhedraWorkbench())
+
+import freecad.Polyhedra.Workbench
