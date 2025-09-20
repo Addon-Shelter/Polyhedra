@@ -48,8 +48,6 @@ from os.path import join
 from FreeCAD import Gui
 
 from .Utils.Files import getWorkbenchFolder
-from .Commands import registerCommands
-from .Toolbar import extendToolbar
 
 
 translations = join(getWorkbenchFolder(),'Resources','Translations')
@@ -58,6 +56,5 @@ Gui.addLanguagePath(translations)
 
 Gui.updateLocale()
 
-registerCommands()
 
-extendToolbar()
+import freecad.Polyhedra.Toolbar

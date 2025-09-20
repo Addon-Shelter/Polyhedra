@@ -5,6 +5,9 @@ from .Utils.ViewProviderBox import ViewProviderBox
 from .Utils.Resources import icon
 from .Locale import Shapes
 
+from .PySide.QtCore import SIGNAL
+from .PySide.QtGui import QAction , QIcon
+
 from FreeCAD import Gui , Qt
 from typing import Any
 
@@ -23,7 +26,6 @@ class Command:
 
     def __init__ (
         self ,
-        icon : str ,
         shape : object ,
         shortcut : str ,
         key : str
@@ -31,7 +33,7 @@ class Command:
 
         self.shortcut = shortcut
         self.shape = shape
-        self.icon = icon
+        self.icon = key
 
         self.name = Shapes[ key ]
 
@@ -43,7 +45,7 @@ class Command:
         return {
             'MenuText' : self.name ,
             'ToolTip' : tooltip ,
-            'Pixmap' : icon(f'Shapes/{ self.icon }') ,
+            'Pixmap' : self.iconPath() ,
             'Accel' : self.shortcut
         }
 
@@ -71,3 +73,18 @@ class Command:
     def IsActive ( self ):
         return FreeCAD.ActiveDocument != None
 
+    def iconPath ( self ):
+        return icon(f'Shapes/{ self.icon }')
+
+    def action ( self ):
+
+        icon = QIcon( self.iconPath() )
+
+        action = QAction(
+            toolTip = self.name ,
+            icon = icon
+        )
+
+        action.connect(SIGNAL('triggered()'),self.Activated)
+
+        return action

@@ -1,97 +1,125 @@
 
+from .PySide.QtWidgets import QToolBar
 from .Command import Command
 from .Shapes import Icosahedron_Truncated , Geodesic_Sphere , Dodecahedron , Octahedron , Icosahedron , Hexahedron , Tetrahedron , Pyramid , Regular_Solid
 
 from FreeCAD import Gui
 
 
-def registerCommands ():
+def registerCommands ( toolbar : QToolBar ):
 
     command = Command(
         shortcut = 'Shift+D' ,
         shape = Dodecahedron ,
-        icon = 'Dodecahedron' ,
         key = 'Dodecahedron'
     )
 
     Gui.addCommand('Dodecahedron',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+O' ,
         shape = Octahedron ,
-        icon = 'Octahedron' ,
         key = 'Octahedron'
     )
 
     Gui.addCommand('Octahedron',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+I' ,
         shape = Icosahedron ,
-        icon = 'Icosahedron' ,
         key = 'Icosahedron'
     )
 
     Gui.addCommand('Icosahedron',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+H' ,
         shape = Hexahedron ,
-        icon = 'Hexahedron' ,
         key = 'Hexahedron'
     )
 
     Gui.addCommand('Hexahedron',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+T' ,
         shape = Tetrahedron ,
-        icon = 'Tetrahedron' ,
         key = 'Tetrahedron'
     )
 
     Gui.addCommand('Tetrahedron',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+P' ,
         shape = Pyramid ,
-        icon = 'Pyramid' ,
         key = 'Pyramid'
     )
 
     Gui.addCommand('Pyramid',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+P' ,
         shape = Regular_Solid ,
-        icon = 'Regular-Solid' ,
         key = 'Regular-Solid'
     )
 
     Gui.addCommand('Regular-Solid',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+P' ,
         shape = Geodesic_Sphere ,
-        icon = 'Geodesic-Sphere' ,
         key = 'Geodesic-Sphere'
     )
 
     Gui.addCommand('Geodesic-Sphere',command)
 
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)
+
 
     command = Command(
         shortcut = 'Shift+P' ,
         shape = Icosahedron_Truncated ,
-        icon = 'Icosahedron-Truncated' ,
         key = 'Icosahedron-Truncated'
     )
 
     Gui.addCommand('Icosahedron-Truncated',command)
+
+    action = command.action()
+    action.setParent(toolbar)
+    toolbar.addAction(action)

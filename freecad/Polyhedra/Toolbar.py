@@ -1,34 +1,92 @@
 
-from FreeCAD import Gui
+from .PySide.QtWidgets import QMainWindow , QToolBar
+from .PySide.QtCore import QTimer
+
+from .Utils.Document import DocumentSwitch
+from .Commands import registerCommands
+
+from FreeCAD import Gui , Qt , addDocumentObserver
 
 
-Commands = [
-    'Pyramid' ,
-    'Tetrahedron' ,
-    'Hexahedron' ,
-    'Octahedron' ,
-    'Dodecahedron' ,
-    'Icosahedron' ,
-    'Icosahedron-Truncated' ,
-    'Geodesic-Sphere' ,
-    'Regular-Solid'
-]
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
-def toAppend ( command : str ):
-    return {
-        'toolBar' : 'Solids' ,
-        'append' : command
-    }
-
-Changes = list(map(toAppend,Commands))
+title = QT_TRANSLATE_NOOP('Toolbar','Polyhedra')
 
 
-class Manipulator:
-
-    def modifyToolBars ( self ):
-        return Changes
+toolbar = None
 
 
-def extendToolbar ():
-    Gui.addWorkbenchManipulator(Manipulator())
+timer = QTimer()
+timer.setSingleShot(True)
 
+def insertToolbar ():
+
+    visible = isPartActive()
+
+    global toolbar
+
+    window : QMainWindow = Gui.getMainWindow()
+
+    if not window:
+        return
+
+    if not toolbar:
+
+        toolbar = QToolBar(title)
+        toolbar.setToolTip('Tooltip')
+        toolbar.setObjectName('Solids-Polyhedra')
+
+        registerCommands(toolbar)
+
+        toolbar.setEnabled(False)
+        window.addToolBar(toolbar)
+
+    toolbar.setVisible(visible)
+
+
+def isPartActive ():
+
+    global timer
+
+    workbench = Gui.activeWorkbench()
+
+    if not workbench:
+        return False
+
+    if not hasattr(workbench,'__Workbench__'):
+        timer.start(100)
+        return False
+
+    name = workbench.name()
+
+    print('Name',name)
+
+    return name == 'PartWorkbench'
+
+
+timer.timeout.connect(insertToolbar)
+
+
+
+window = Gui.getMainWindow()
+window.workbenchActivated.connect(insertToolbar)
+
+
+from FreeCAD import activeDocument
+
+
+def update ():
+
+    global toolbar
+
+    if not toolbar:
+        return
+
+    enabled = not not activeDocument()
+
+    toolbar.setEnabled(enabled)
+
+
+observer = DocumentSwitch(update)
+
+addDocumentObserver(observer)
