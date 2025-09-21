@@ -1,54 +1,104 @@
-# Pyramids-and-Polyhedrons
-FreeCad Workbench for generating
-pyramids and polyhedrons:
-- tetrahedron
-- hexahedron
-- octahedron
-- dodecahedron
-- icosahedron
-- truncated icosahedron (football)
-- geodesic spheres (level 1 to 10)
-- other regular solids
+# Polyhedra
 
-All these parts are fully scalable and can be adjusted at all time.
+Integrates a toolbar for creating various  
+Polyhedrons into the Part workbench.
 
-<img src = './Resources/Images/Workbench.webp' />
+<img src = './Resources/Images/Toolbar.webp' />
 
-<img src = './Resources/Images/Banner.webp' />
+<br/>
 
+## Shapes
 
-# How to use:
-- Activate the shape you want by clicking on the icon in the workbench.
-- Activate it by clicking on the label in the Model.
-- Then adjust the sizes, as with classic Parts.
+The following shapes can be generated:
 
-If you want to edit it in the workbench Part Design:
-- click on it in the model-view and then click on the 'body-button'.
+<table>
+<tr>
+<td align = 'center' >
 
+<img src = './Resources/Animations/Tetrahedron.webp' height = 64 />
 
-# Tutorials on YouTube:
+**Tetrahedron**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Hexahedron.webp' height = 64 />
+
+**Hexahedron**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Pyramid.webp' height = 64 />
+
+**Pyramid**
+
+</td>
+</tr>
+<tr>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Octahedron.webp' height = 64 center />
+
+**Octahedron**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Icosahedron.webp' height = 64 center />
+
+**Icosahedron**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Dodecahedron.webp' height = 64 center />
+
+**Dodecahedron**
+
+</td>
+</tr>
+<tr>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Regular-Solid.webp' height = 64 center />
+
+**Regular** <br/> **Solid**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Truncated-Icosahedron.webp' height = 64 center />
+
+**Truncated** <br/> **Icosahedron**
+
+</td>
+<td align = 'center' >
+
+<img src = './Resources/Animations/Geodesic-Sphere.webp' height = 64 center />
+
+**Geodesic** <br/> **Sphere**
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+## Usage
+
+-   Install the addon
+-   Open a new document
+-   Navigate to the `Part` workbench
+-   Use one of the Polyhedra tools
+-   Configure shape in the model editor
+
+<br/>
+
+## Tutorials
+*( For previous versions )*
 - [Pyramids use and possibilities](https://youtu.be/H8IgmzpMpSg) 
 - [Editing polyhedrons in PartDesign](https://youtu.be/Lym1jM_Vans)
 - [More advanced, build a model of a geodesic dome](https://youtu.be/FsYHYnVcVvI) 
 
-
-# Install using the addon manager
-In FREECAD go to the Main Menu/Tools/Addon Manager
-- Select the tab Workbenches
-- Select 'Pyramids-and-Polyhedrons' and click "Install"
-
-
-# How to install the workbench manually 
-(if not available in FreeCAD-addons)
-- Find the Macro folder via FreeCadMenu/Edit/Preferences/Macro ...
-- Go to the 'Mod' folder, NEXT TO the 'Macro' folder (or create it next to the Mod folder) 
-- download a copy of this repository and put it in the Mod folder
-- IMPORTANT! Rename the folder to "Pyramids-and-Polyhedrons" (remove "-master")
-- (re)start FreeCAD
-- The workbench 'Pyramids-and-Polyhedrons' is now in the list of workbenches.
-
-
-# Alternative solution
-Macro Pyramids and macro Polyhedrons
-The addon manager does contain the same functions as macros.
-So if you have trouble installing the workbench, this is a suitable alternative.
+<br/>
