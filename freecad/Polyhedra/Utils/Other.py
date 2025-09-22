@@ -21,35 +21,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-# Based on examples at : https://www.freecadweb.org/wiki/Workbench_creation
-
-# Version 01.07
-
-
-# Version 01.02  (2020-01-15)
-# added geodesic sphere
-
-# version 01.03   (2020-01-23)
-# added hexahedron  (cube)
-
-# version 01.04  (2020-01-30)
-# renamed Mod to Pyramids-and-Polyhedrons
-
-# version 01.05  (2020-02-24)
-# Side of icosahedron_truncated was side of icosahedron -> corrected
-
-# version 01.06  (2020-12-21)
-# Pyramids are rotatable around the z-axis and start parallel to the x-axis
-
-# version 01.07  (2020-12-26)
-# Some namechanges
-
-# version 01.07a (2020-12-30)
-# flexibility for installation folder
-
-# version 01.07b (2020-01-02)
-# icosahedron_truncated : now radius of the result, not of the base icosahedron
-
 
 # The following code section provides an object that can be parameterised to produce any of the platonic, archimedean and catalan
 # solids, and more, by starting with one of the five platonic solids and then truncating vertices respectively edges.

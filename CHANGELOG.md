@@ -13,7 +13,16 @@ History of notable changes.
 
 <br/>
 
-## [0.1.7] - 2020-12-30
+## [0.1.7.2] - 2020-01-02
+
+### Changed
+
+-   Truncated Icosahedron:
+    Radius is now of the result instead of the base Icosahedron.
+
+<br/>
+
+## [0.1.7.1] - 2020-12-30
 
 ### Changed
 
@@ -21,7 +30,19 @@ History of notable changes.
 
 <br/>
 
+## [0.1.6] - 2020-12-21
+
+### Changed
+
+-   Pyramids are rotatable around the z-axis and start parallel to the x-axis
+
+<br/>
+
 ## [0.1.5] - 2020-12-26
+
+### Fixed
+
+-   Side of Icosahedron_Truncated was side of Icosahedron
 
 ### Changed
 
@@ -55,7 +76,8 @@ History of notable changes.
 
 
 [0.1.8]: #
-[0.1.7]: #
+[0.1.7.2]: #
+[0.1.7.1]: #
 [0.1.6]: #
 [0.1.5]: #
 [0.1.4]: #
