@@ -59,8 +59,6 @@ def isPartActive ():
 
     name = workbench.name()
 
-    print('Name',name)
-
     return name == 'PartWorkbench'
 
 

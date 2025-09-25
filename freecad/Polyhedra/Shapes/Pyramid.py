@@ -1,18 +1,29 @@
 
 
-import FreeCAD
-import Part
-import math
-
 from ..Utils.Vertexes import pyramid_Vertexes
 
-from FreeCAD import Qt
+from FreeCAD import DocumentObject , Console , Part , Qt
+from typing import Any
+from math import sin , pi
 
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
-class Pyramid:
+class PyramidPart ( DocumentObject ):
+
+    Sidelength1 : float
+    Sidelength2 : float
+    Z_rotation : float
+    Sidescount : int
+    Radius1 : float
+    Radius2 : float
+    Height : float
+
+    Shape : Any
+
+
+class Pyramid :
 
     sidescountvalue = 0
     radius1value = 0
@@ -23,103 +34,123 @@ class Pyramid:
 
     def __init__ (
         self ,
-        obj ,
-        sidescount = 5 ,
-        radius_bottom = 2 ,
-        radius_top = 4 ,
-        height = 10 ,
-        angz = 0
+        object : PyramidPart ,
+        side_count : int = 5 ,
+        radius_bottom : float = 2 ,
+        radius_top : float = 4 ,
+        height : float = 10 ,
+        angle_z : float  = 0
     ):
 
-        obj.addProperty(
-            "App::PropertyLength",
-            "Radius1",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the pyramid"),
-        ).Radius1 = radius_bottom
+        def property (
+            description : str ,
+            type : str ,
+            name : str
+        ):
+            object.addProperty(
+                f'App::Property{ type }',
+                name , 'Pyramid' ,
+                description
+            )
 
-        obj.addProperty(
-            "App::PropertyLength",
-            "Radius2",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the pyramid"),
-        ).Radius2 = radius_top
-
-        obj.addProperty(
-            "App::PropertyLength",
-            "Height",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Height of the pyramid"),
-        ).Height = height
-
-        obj.addProperty(
-            "App::PropertyInteger",
-            "Sidescount",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Sidescount of the pyramid"),
-        ).Sidescount = sidescount
-
-        obj.addProperty(
-            "App::PropertyLength",
-            "Sidelength1",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength1 of the pyramid"),
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of the pyramid') ,
+            name = 'Radius1' ,
+            type = 'Length'
         )
 
-        obj.addProperty(
-            "App::PropertyLength",
-            "Sidelength2",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength2 of the pyramid"),
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of the pyramid') ,
+            name = 'Radius2' ,
+            type = 'Length'
         )
 
-        obj.addProperty(
-            "App::PropertyAngle",
-            "Z_rotation",
-            "Pyramid",
-            QT_TRANSLATE_NOOP("App::Property", "alfa angle around Z"),
-        ).Z_rotation = angz
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Height of the pyramid') ,
+            name = 'Height' ,
+            type = 'Length'
+        )
 
-        obj.Proxy = self
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Sidescount of the pyramid') ,
+            name = 'Sidescount' ,
+            type = 'Integer'
+        )
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Sidelength1 of the pyramid') ,
+            name = 'Sidelength1' ,
+            type = 'Length'
+        )
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Sidelength2 of the pyramid') ,
+            name = 'Sidelength2' ,
+            type = 'Length'
+        )
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','alfa angle around Z') ,
+            name = 'Z_rotation' ,
+            type = 'Angle'
+        )
+
+        object.Sidescount = side_count
+        object.Z_rotation = angle_z
+        object.Radius2 = radius_top
+        object.Radius1 = radius_bottom
+        object.Height = height
+        object.Proxy = self
 
 
-    def execute ( self , object ):
+    def execute ( self , object : PyramidPart ):
 
-        sidescount = int(object.Sidescount)
-        angle = 2 * math.pi / sidescount
+        sidescount = object.Sidescount
+        angle = 2 * pi / sidescount
+
+        sidelength_bottom = float(object.Sidelength1)
+        sidelength_top = float(object.Sidelength2)
         radius_bottom = float(object.Radius1)
         radius_top = float(object.Radius2)
-        sidelength_top = float(object.Sidelength2)
-        sidelength_bottom = float(object.Sidelength1)
-        height = float(object.Height)
         anglez = float(object.Z_rotation)
+        height = float(object.Height)
 
         if radius_bottom != self.radius1value or sidescount != self.sidescountvalue:
-            object.Sidelength1 = radius_bottom * math.sin(angle/2) * 2
+
+            object.Sidelength1 = radius_bottom * sin( angle / 2 ) * 2
             self.radius1value = radius_bottom
-            self.side1value = float(object.Sidelength1)
+            self.side1value = object.Sidelength1
+
         elif sidelength_bottom != self.side1value:
-            self.radius1value = float(object.Sidelength1 / 2) / math.sin(angle/2)
+
+            self.radius1value = ( object.Sidelength1 / 2 ) / sin( angle / 2 )
             object.Radius1 = self.radius1value
+
             radius_bottom = self.radius1value
-            self.side1value = float(object.Sidelength1)
+
+            self.side1value = object.Sidelength1
 
         if radius_top != self.radius2value or sidescount != self.sidescountvalue:
-            object.Sidelength2 = radius_top * math.sin(angle/2) * 2
-            self.radius2value = float(radius_top)
-            self.side2value = float(object.Sidelength2)
+
+            object.Sidelength2 = radius_top * sin( angle / 2 ) * 2
+            self.radius2value = radius_top
+            self.side2value = object.Sidelength2
+
         elif sidelength_top != self.side2value:
-            self.radius2value = float(object.Sidelength2 / 2) / math.sin(angle/2)
+
+            self.radius2value = ( object.Sidelength2 / 2 ) / sin( angle / 2 )
             object.Radius2 = self.radius2value
+
             radius_top = self.radius2value
-            self.side2value = float(object.Sidelength2)
+
+            self.side2value = object.Sidelength2
 
         self.sidescountvalue = sidescount
 
         faces = []
 
         if radius_bottom == 0 and radius_top == 0:
-            FreeCAD.Console.PrintMessage("Both radiuses are zero" + "\n")
+            Console.PrintMessage('Both radiuses are zero' + '\n')
             return
 
         vertexes_bottom = pyramid_Vertexes(sidescount,radius_bottom,0,anglez)
@@ -137,7 +168,7 @@ class Pyramid:
             face_top = Part.Face(polygon_top)
             faces.append(face_top)
 
-        for i in range(sidescount):
+        for i in range( sidescount ):
 
             if radius_top == 0:
 
@@ -167,7 +198,7 @@ class Pyramid:
                     vertexes_bottom[ i ]
                 ]
 
-            polygon_side=Part.makePolygon(vertexes_side)
+            polygon_side = Part.makePolygon(vertexes_side)
             faces.append(Part.Face(polygon_side))
 
         shell = Part.makeShell(faces)

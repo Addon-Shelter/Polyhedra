@@ -1,14 +1,14 @@
 
 import FreeCAD
 
-from .Utils.ViewProviderBox import ViewProviderBox
+from .Utils.ViewProvider import ViewProvider
 from .Utils.Resources import icon
 from .Locale import Shapes
 
 from .PySide.QtCore import SIGNAL
 from .PySide.QtGui import QAction , QIcon
 
-from FreeCAD import Gui , Qt
+from FreeCAD import DocumentObject , Gui , Qt
 from typing import Any
 
 
@@ -60,10 +60,11 @@ class Command:
         if not document:
             return
 
-        object = document.addObject('Part::FeaturePython',name)
+        object : DocumentObject = document.addObject('Part::FeaturePython',name)
 
         shape(object)
-        ViewProviderBox(object.ViewObject,name)
+
+        ViewProvider(object.ViewObject,self.icon)
 
         document.recompute()
 
