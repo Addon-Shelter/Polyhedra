@@ -2,7 +2,7 @@
 
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import DocumentObject , Qt
+from FreeCAD import DocumentObject , Units , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , acos , sin , pi
@@ -13,8 +13,8 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class IcosahedronPart ( DocumentObject ):
 
-    Radius : float
-    Side : float
+    Radius : Units.Quantity
+    Side : Units.Quantity
 
     Shape : Any
 
@@ -52,21 +52,22 @@ class Icosahedron:
             type = 'Length'
         )
 
-        object.Radius = radius
+        object.Radius.Value = radius
         object.Proxy = self
 
 
     def execute ( self , object : IcosahedronPart ):
 
-        radius = float( object.Radius )
+        radius = object.Radius.Value
+        side = object.Side.Value
 
 
         if radius == self.radius :
-            self.radius = float(object.Side * sqrt(10 + 2 * sqrt(5)) / 4)
-            object.Radius = self.radius
+            self.radius = side * sqrt( 10 + 2 * sqrt(5) ) / 4
+            object.Radius.Value = self.radius
             radius = self.radius
         else:
-            object.Side = 4*radius / sqrt(10 + 2 * sqrt(5))
+            object.Side.Value = 4 * radius / sqrt( 10 + 2 * sqrt(5) )
             self.radius = radius
 
 

@@ -1,7 +1,7 @@
 
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import DocumentObject , Qt
+from FreeCAD import DocumentObject , Units , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt
@@ -12,8 +12,8 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class OctahedronPart ( DocumentObject ):
 
-    Radius : float
-    Side : float
+    Radius : Units.Quantity
+    Side : Units.Quantity
 
     Shape : Any
 
@@ -52,21 +52,21 @@ class Octahedron:
             type = 'Length'
         )
 
-        object.Radius = radius
+        object.Radius.Value = radius
         object.Proxy = self
 
 
     def execute ( self , object : OctahedronPart ):
 
-        radius = float( object.Radius )
-        side = float( object.Side )
+        radius = object.Radius.Value
+        side = object.Side.Value
 
         if radius == self.radius :
             self.radius = side / sqrt(2)
-            object.Radius = self.radius
+            object.Radius.Value = self.radius
             radius = self.radius
         else:
-            object.Side = radius * sqrt(2)
+            object.Side.Value = radius * sqrt(2)
             self.radius = radius
 
 

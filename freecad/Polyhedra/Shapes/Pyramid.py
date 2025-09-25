@@ -1,7 +1,7 @@
 
 from ..Utils.Vertexes import pyramid_Vertexes
 
-from FreeCAD import DocumentObject , Console , Qt
+from FreeCAD import DocumentObject , Units , Console , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Face
 from math import sin , pi
@@ -12,14 +12,14 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class PyramidPart ( DocumentObject ):
 
-    Sidelength1 : float
-    Sidelength2 : float
-    Z_rotation : float
-    Sidescount : int
-    Radius1 : float
-    Radius2 : float
-    Height : float
+    Sidelength1 : Units.Quantity
+    Sidelength2 : Units.Quantity
+    Z_rotation : Units.Quantity
+    Radius1 : Units.Quantity
+    Radius2 : Units.Quantity
+    Height : Units.Quantity
 
+    Sidescount : int
     Shape : Any
 
 
@@ -95,11 +95,12 @@ class Pyramid :
             type = 'Angle'
         )
 
+        object.Z_rotation.Value = angle_z
+        object.Radius2.Value = radius_top
+        object.Radius1.Value = radius_bottom
+        object.Height.Value = height
+
         object.Sidescount = side_count
-        object.Z_rotation = angle_z
-        object.Radius2 = radius_top
-        object.Radius1 = radius_bottom
-        object.Height = height
         object.Proxy = self
 
 
@@ -108,44 +109,44 @@ class Pyramid :
         sides = object.Sidescount
         angle = 2 * pi / sides
 
-        side_bottom = float(object.Sidelength1)
-        side_top = float(object.Sidelength2)
+        side_bottom = object.Sidelength1.Value
+        side_top = object.Sidelength2.Value
 
-        radius_bottom = float(object.Radius1)
-        radius_top = float(object.Radius2)
+        radius_bottom = object.Radius1.Value
+        radius_top = object.Radius2.Value
 
-        angle_z = float(object.Z_rotation)
-        height = float(object.Height)
+        angle_z = object.Z_rotation.Value
+        height = object.Height.Value
 
         if radius_bottom != self.radius1value or sides != self.sidescountvalue:
 
-            object.Sidelength1 = radius_bottom * sin( angle / 2 ) * 2
+            object.Sidelength1.Value = radius_bottom * sin( angle / 2 ) * 2
             self.radius1value = radius_bottom
-            self.side1value = object.Sidelength1
+            self.side1value = object.Sidelength1.Value
 
         elif side_bottom != self.side1value:
 
-            self.radius1value = ( object.Sidelength1 / 2 ) / sin( angle / 2 )
-            object.Radius1 = self.radius1value
+            self.radius1value = ( object.Sidelength1.Value / 2 ) / sin( angle / 2 )
+            object.Radius1.Value = self.radius1value
 
             radius_bottom = self.radius1value
 
-            self.side1value = object.Sidelength1
+            self.side1value = object.Sidelength1.Value
 
         if radius_top != self.radius2value or sides != self.sidescountvalue:
 
-            object.Sidelength2 = radius_top * sin( angle / 2 ) * 2
+            object.Sidelength2.Value = radius_top * sin( angle / 2 ) * 2
             self.radius2value = radius_top
-            self.side2value = object.Sidelength2
+            self.side2value = object.Sidelength2.Value
 
         elif side_top != self.side2value:
 
-            self.radius2value = ( object.Sidelength2 / 2 ) / sin( angle / 2 )
-            object.Radius2 = self.radius2value
+            self.radius2value = ( object.Sidelength2.Value / 2 ) / sin( angle / 2 )
+            object.Radius2.Value = self.radius2value
 
             radius_top = self.radius2value
 
-            self.side2value = object.Sidelength2
+            self.side2value = object.Sidelength2.Value
 
         self.sidescountvalue = sides
 
@@ -156,7 +157,7 @@ class Pyramid :
             return
 
         vertexes_bottom = pyramid_Vertexes(sides,radius_bottom,0,angle_z)
-        vertexes_top    = pyramid_Vertexes(sides,radius_top,height,angle_z)
+        vertexes_top = pyramid_Vertexes(sides,radius_top,height,angle_z)
 
         if not radius_bottom == 0:
 

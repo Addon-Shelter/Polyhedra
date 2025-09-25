@@ -1,7 +1,7 @@
 
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import DocumentObject , Qt
+from FreeCAD import DocumentObject , Units , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , sin , cos , pi
@@ -12,8 +12,8 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class DodecahedronPart ( DocumentObject ):
 
-    Radius : float
-    Side : float
+    Radius : Units.Quantity
+    Side : Units.Quantity
 
     Shape : Any
 
@@ -52,7 +52,7 @@ class Dodecahedron:
             type = 'Length'
         )
 
-        object.Radius = radius
+        object.Radius.Value = radius
         object.Proxy = self
 
 
@@ -61,14 +61,15 @@ class Dodecahedron:
         anglefaces = 116.565051177
         angleribs = 121.717474411
 
-        radius = float( object.Radius )
+        radius = object.Radius.Value
+        side = object.Side.Value
 
         if radius == self.radius :
-            self.radius = float(object.Side * ( sqrt(3) * ( 1 + sqrt(5) ) ) / 4 )
-            object.Radius = self.radius
+            self.radius = side * ( sqrt(3) * ( 1 + sqrt(5) ) ) / 4
+            object.Radius.Value = self.radius
             radius = self.radius
         else:
-            object.Side = 4 * radius /  ( sqrt(3) * ( 1 + sqrt(5) ) )
+            object.Side.Value = 4 * radius /  ( sqrt(3) * ( 1 + sqrt(5) ) )
             self.radius = radius
 
         faces = []
@@ -83,7 +84,6 @@ class Dodecahedron:
         # height of the side-tips
 
         radius1 = z / 2 / sin( 36 * pi / 180 )
-
 
         # height of the tops
 
@@ -150,4 +150,5 @@ class Dodecahedron:
 
         shell = makeShell(faces)
         solid = makeSolid(shell)
+
         object.Shape = solid

@@ -1,13 +1,34 @@
 
 
-import Part
-
 from ..Utils.Other import createSolid
 
-from FreeCAD import Vector , Qt
+from FreeCAD import DocumentObject , Vector , Units , Console , Qt
+from typing import Any
+from Part import makePolygon , makeSolid , makeShell , Point , Face
+from math import sin , pi
 
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+
+
+class RegularSolidPart ( DocumentObject ):
+
+    Circumradius : Units.Quantity
+    Midradius : Units.Quantity
+    Inradius : Units.Quantity
+    LongEdge : Units.Quantity
+    ShortEdge : Units.Quantity
+
+    Presets : list[ str ]
+    Source : list[ str ]
+    Snub : list[ str ]
+
+    Vtrunc : float
+    Etrunc : float
+
+    KeepSize : str
+    Shape : Any
+    Dual : bool
 
 
 # The following two classes 'RegularSolid' and 'RegularSolidCommand' make the abilities of the 'createSolid' function above
@@ -32,33 +53,33 @@ class Regular_Solid:
         ),
 
         'Presets' : (
-            (    '0' , 'Custom', ''),
-            (   't4' , 'Truncated Tetrahedron', ''),
-            (   'r4' , 'Cuboctahedron', ''),
-            (   't6' , 'Truncated Cube', ''),
-            (   't8' , 'Truncated Octahedron', ''),
-            (   'b6' , 'Rhombicuboctahedron', ''),
-            (   'c6' , 'Truncated Cuboctahedron', '', True),
-            (   's6' , 'Snub Cube', ''),
-            (  'r12' , 'Icosidodecahedron', ''),
-            (  't12' , 'Truncated Dodecahedron', ''),
-            (  't20' , 'Truncated Icosahedron', ''),
-            (  'b12' , 'Rhombicosidodecahedron', ''),
-            (  'c12' , 'Truncated Icosidodecahedron', ''),
-            (  's12' , 'Snub Dodecahedron', ''),
-            (  'dt4' , 'Triakis Tetrahedron', ''),
-            (  'dr4' , 'Rhombic Dodecahedron', ''),
-            (  'dt6' , 'Triakis Octahedron', ''),
-            (  'dt8' , 'Tetrakis Hexahedron', ''),
-            (  'db6' , 'Deltoidal Icositetrahedron', ''),
-            (  'dc6' , 'Disdyakis Dodecahedron', ''),
-            (  'ds6' , 'Pentagonal Icositetrahedron', ''),
-            ( 'dr12' , 'Rhombic Triacontahedron', ''),
-            ( 'dt12' , 'Triakis Icosahedron', ''),
-            ( 'dt20' , 'Pentakis Dodecahedron', ''),
-            ( 'db12' , 'Deltoidal Hexecontahedron', ''),
-            ( 'dc12' , 'Disdyakis Triacontahedron', ''),
-            ( 'ds12' , 'Pentagonal Hexecontahedron', '')
+            (    '0' , 'Custom',''),
+            (   't4' , 'Truncated Tetrahedron',''),
+            (   'r4' , 'Cuboctahedron',''),
+            (   't6' , 'Truncated Cube',''),
+            (   't8' , 'Truncated Octahedron',''),
+            (   'b6' , 'Rhombicuboctahedron',''),
+            (   'c6' , 'Truncated Cuboctahedron','', True),
+            (   's6' , 'Snub Cube',''),
+            (  'r12' , 'Icosidodecahedron',''),
+            (  't12' , 'Truncated Dodecahedron',''),
+            (  't20' , 'Truncated Icosahedron',''),
+            (  'b12' , 'Rhombicosidodecahedron',''),
+            (  'c12' , 'Truncated Icosidodecahedron',''),
+            (  's12' , 'Snub Dodecahedron',''),
+            (  'dt4' , 'Triakis Tetrahedron',''),
+            (  'dr4' , 'Rhombic Dodecahedron',''),
+            (  'dt6' , 'Triakis Octahedron',''),
+            (  'dt8' , 'Tetrakis Hexahedron',''),
+            (  'db6' , 'Deltoidal Icositetrahedron',''),
+            (  'dc6' , 'Disdyakis Dodecahedron',''),
+            (  'ds6' , 'Pentagonal Icositetrahedron',''),
+            ( 'dr12' , 'Rhombic Triacontahedron',''),
+            ( 'dt12' , 'Triakis Icosahedron',''),
+            ( 'dt20' , 'Pentakis Dodecahedron',''),
+            ( 'db12' , 'Deltoidal Hexecontahedron',''),
+            ( 'dc12' , 'Disdyakis Triacontahedron',''),
+            ( 'ds12' , 'Pentagonal Hexecontahedron','')
         )
     }
 
@@ -104,102 +125,105 @@ class Regular_Solid:
 
     def __init__ (
         self ,
-        object ,
+        object : RegularSolidPart ,
         midradius = 5
     ):
 
         def property ( name , type , description ):
-            return object.addProperty(
+            object.addProperty(
                 f'App::Property{ type }',
                 name , 'RegularSolid' ,
                 description
             )
 
-
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Radius of inscribed sphere touching closest edge') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching closest edge') ,
             name = 'Midradius' ,
             type = 'Length'
-        ).Midradius = midradius
-
+        )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Radius of inscribed sphere touching closest face') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching closest face') ,
             name = 'Inradius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Radius of inscribed sphere touching furthest vertex') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching furthest vertex') ,
             name = 'Circumradius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Length of longest edge') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Length of longest edge') ,
             name = 'LongEdge' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Length of shortest edge') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Length of shortest edge') ,
             name = 'ShortEdge' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'What drives solid size when changing construction') ,
+            description = QT_TRANSLATE_NOOP('App::Property','What drives solid size when changing construction') ,
             name = 'KeepSize' ,
             type = 'Enumeration'
         )
 
-        object.KeepSize = self.sizenames
-        object.KeepSize = self.sizenames[0]
-
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Initiating body') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Initiating body') ,
             name = 'Source' ,
             type = 'Enumeration'
         )
 
-        object.Source = [ e[1] for e in self.enums['Source'] ]
-        object.Source = [ e[1] for e in self.enums['Source'] if len(e) >= 4 and e[3] ][0]
-
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Amount of vertex truncation/elongation') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Amount of vertex truncation/elongation') ,
             name = 'Vtrunc' ,
             type = 'Float'
-        ).Vtrunc = 0.0
+        )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Amount of edge truncation') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Amount of edge truncation') ,
             name = 'Etrunc' ,
             type = 'Float'
-        ).Etrunc = 0.0
+        )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Create the snub version') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Create the snub version') ,
             name = 'Snub' ,
             type = 'Enumeration'
         )
 
-        object.Snub = [e[1] for e in self.enums['Snub']]
-        object.Snub = [e[1] for e in self.enums['Snub'] if len(e) >= 4 and e[3]][0]
-
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Create the dual of the current solid') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Create the dual of the current solid') ,
             name = 'Dual' ,
             type = 'Bool'
-        ).Dual = False
+        )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property', 'Preset parameters for some hard names') ,
+            description = QT_TRANSLATE_NOOP('App::Property','Preset parameters for some hard names') ,
             name = 'Presets' ,
             type = 'Enumeration'
         )
 
         object.Presets = [ e[1] for e in self.enums['Presets'] ]
-        object.Presets = [ e[1] for e in self.enums['Presets'] if len(e) >= 4 and e[3]][0]
+        object.Presets = [ e[1] for e in self.enums['Presets'] if len(e) >= 4 and e[3] ][0]
+
+        object.Source = [ e[1] for e in self.enums['Source'] ]
+        object.Source = [ e[1] for e in self.enums['Source'] if len(e) >= 4 and e[3] ][0]
+
+        object.Snub = [ e[1] for e in self.enums['Snub'] ]
+        object.Snub = [ e[1] for e in self.enums['Snub'] if len(e) >= 4 and e[3] ][0]
+
+        object.KeepSize = self.sizenames
+        object.KeepSize = self.sizenames[0]
+
+        object.Midradius.Value = midradius
+        object.Vtrunc = 0.0
+        object.Etrunc = 0.0
+        object.Dual = False
 
         object.Proxy = self
 
@@ -219,7 +243,7 @@ class Regular_Solid:
         self.prevsizes = ( None , None , None , None , None )
         self.prevcode = None
 
-    def execute ( self , object ):
+    def execute ( self , object : RegularSolidPart ):
 
         sizes = (
             object.Midradius ,
@@ -270,11 +294,11 @@ class Regular_Solid:
 
         for face in bpy_faces:
             verts = [ bpy_verts[ vi ] for vi in face ] + [ bpy_verts[ face[0] ] ]
-            polygon = Part.makePolygon(verts)
-            faces.append(Part.Face(polygon))
+            polygon = makePolygon(verts)
+            faces.append(Face(polygon))
 
         v0 = Vector(0,0,0)
-        s0 = Part.Point(v0).toShape()
+        s0 = Point(v0).toShape()
 
         origsizes = (
             min(e.distToShape(s0)[0] for f in faces for e in f.Edges), # Midradius
@@ -284,7 +308,9 @@ class Regular_Solid:
             min(e.Length for f in faces for e in f.Edges) # ShortEdge
         )
 
-        for i in range(len(self.sizenames)):
+        scale = 1
+
+        for i in range(len(self.sizenames)) :
             if keepsize == self.sizenames[i]:
                 scale = sizes[i] / origsizes[i]
                 break
@@ -297,7 +323,7 @@ class Regular_Solid:
         self.prevsizes = \
         tuple( os * scale for os in origsizes )
 
-        shell = Part.makeShell(faces).scaled(scale,v0)
-        solid = Part.makeSolid(shell)
+        shell = makeShell(faces).scaled(scale,v0)
+        solid = makeSolid(shell)
 
         object.Shape = solid

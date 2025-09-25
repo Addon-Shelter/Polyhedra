@@ -1,7 +1,7 @@
 
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import DocumentObject , Qt
+from FreeCAD import DocumentObject , Units , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , pi
@@ -12,8 +12,8 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class HexahedronPart ( DocumentObject ):
 
-    Radius : float
-    Side : float
+    Radius : Units.Quantity
+    Side : Units.Quantity
 
     Shape : Any
 
@@ -51,22 +51,25 @@ class Hexahedron:
             type = 'Length'
         )
 
-        object.Radius = radius
+        object.Radius.Value = radius
         object.Proxy = self
 
 
     def execute ( self , object : HexahedronPart ):
 
-        radius = float( object.Radius )
+        print('Side',type(object.Side))
+
+        radius = object.Radius.Value
+        side = object.Side.Value
 
         if radius == self.radius :
-            self.radius = object.Side / 2 * sqrt(3)
-            object.Radius = self.radius
+            self.radius = side / 2 * sqrt(3)
+            object.Radius.Value = self.radius
             radius = self.radius
-            side = object.Side
+            side = object.Side.Value
         else:
             side = radius * 2 / sqrt(3)
-            object.Side = side
+            object.Side.Value = side
             self.radius = radius
 
         faces = []
