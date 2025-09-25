@@ -1,64 +1,108 @@
 
-
-import Part
-import math
-
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import Qt
+from FreeCAD import DocumentObject , Qt
+from typing import Any
+from Part import makePolygon , makeSolid , makeShell , Face
+from math import sqrt , pi
 
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
+class HexahedronPart ( DocumentObject ):
+
+    Radius : float
+    Side : float
+
+    Shape : Any
+
+
 class Hexahedron:
 
-    radiusvalue = 0
+    radius = 0
 
-    def __init__(self, obj, radius=5):
-        obj.addProperty(
-            "App::PropertyLength",
-            "Radius",
-            "Hexahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the hexahedron"),
-        ).Radius = radius
-        obj.addProperty(
-            "App::PropertyLength",
-            "Side",
-            "Hexahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the hexahedron"),
+    def __init__ (
+        self ,
+        object : HexahedronPart ,
+        radius : float = 5
+    ):
+
+        def property (
+            description : str ,
+            type : str ,
+            name : str
+        ):
+            object.addProperty(
+                f'App::Property{ type }',
+                name , 'Hexahedron' ,
+                description
+            )
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of the hexahedron') ,
+            name = 'Radius' ,
+            type = 'Length'
         )
-        obj.Proxy = self
 
-    def execute(self, obj):
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the hexahedron') ,
+            name = 'Side' ,
+            type = 'Length'
+        )
 
-        radius = float(obj.Radius)
-        if (radius != self.radiusvalue):
-            side = radius * 2 / math.sqrt(3)
-            obj.Side = side
-            self.radiusvalue = radius
+        object.Radius = radius
+        object.Proxy = self
+
+
+    def execute ( self , object : HexahedronPart ):
+
+        radius = float( object.Radius )
+
+        if radius == self.radius :
+            self.radius = object.Side / 2 * sqrt(3)
+            object.Radius = self.radius
+            radius = self.radius
+            side = object.Side
         else:
-            self.radiusvalue = obj.Side / 2 * math.sqrt(3)
-            obj.Radius = self.radiusvalue
-            radius = self.radiusvalue
-            side = obj.Side
+            side = radius * 2 / sqrt(3)
+            object.Side = side
+            self.radius = radius
 
         faces = []
-        vertexes_bottom = polygon_Vertexes(4,math.sqrt(side ** 2 / 2),- side/2, math.pi/4)
-        vertexes_top    = polygon_Vertexes(4,math.sqrt(side ** 2 / 2), side/2, math.pi/4)
+
+        vertexes_bottom = polygon_Vertexes(4,sqrt(side ** 2 / 2),- side / 2, pi / 4)
+        vertexes_top    = polygon_Vertexes(4,sqrt(side ** 2 / 2), side / 2, pi / 4)
 
         for i in range(4):
-            vertexes_side=[vertexes_bottom[i],vertexes_bottom[i+1],vertexes_top[i+1],vertexes_top[i],vertexes_bottom[i]]
-            polygon_side=Part.makePolygon(vertexes_side)
-            faces.append(Part.Face(polygon_side))
 
-        polygon_bottom=Part.makePolygon(vertexes_bottom)
-        faces.append(Part.Face(polygon_bottom))
+            vertexes = [
+                vertexes_bottom[ i ] ,
+                vertexes_bottom[ i + 1 ] ,
+                vertexes_top[ i + 1 ] ,
+                vertexes_top[ i ] ,
+                vertexes_bottom[ i ]
+            ]
 
-        polygon_top=Part.makePolygon(vertexes_top)
-        faces.append(Part.Face(polygon_top))
+            polygon = makePolygon(vertexes)
+            face = Face(polygon)
 
-        shell = Part.makeShell(faces)
-        solid = Part.makeSolid(shell)
-        obj.Shape = solid
+            faces.append(face)
+
+        polygon = makePolygon(vertexes_bottom)
+        face = Face(polygon)
+
+        faces.append(face)
+
+
+        polygon = makePolygon(vertexes_top)
+        face = Face(polygon)
+
+        faces.append(face)
+
+
+        shell = makeShell(faces)
+        solid = makeSolid(shell)
+
+        object.Shape = solid
 

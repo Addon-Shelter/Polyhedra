@@ -1,91 +1,153 @@
 
-import Part
-import math
-
 from ..Utils.Vertexes import polygon_Vertexes
 
-from FreeCAD import Qt
+from FreeCAD import DocumentObject , Qt
+from typing import Any
+from Part import makePolygon , makeSolid , makeShell , Face
+from math import sqrt , sin , cos , pi
 
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
+class DodecahedronPart ( DocumentObject ):
+
+    Radius : float
+    Side : float
+
+    Shape : Any
+
+
 class Dodecahedron:
 
-    radiusvalue = 0
+    radius = 0
 
-    def __init__(self, obj, radius=5):
-        obj.addProperty(
-            "App::PropertyLength",
-            "Radius",
-            "Dodecahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Radius of the dodecahedron"),
-        ).Radius = radius
-        obj.addProperty(
-            "App::PropertyLength",
-            "Side",
-            "Dodecahedron",
-            QT_TRANSLATE_NOOP("App::Property", "Sidelength of the dodecahedron"),
+    def __init__ (
+        self ,
+        object : DodecahedronPart ,
+        radius : float = 5
+    ):
+
+
+        def property (
+            description : str ,
+            type : str ,
+            name : str
+        ):
+            object.addProperty(
+                f'App::Property{ type }',
+                name , 'Dodecahedron' ,
+                description
+            )
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Radius of the dodecahedron') ,
+            name = 'Radius' ,
+            type = 'Length'
         )
-        obj.Proxy = self
+
+        property(
+            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the dodecahedron') ,
+            name = 'Side' ,
+            type = 'Length'
+        )
+
+        object.Radius = radius
+        object.Proxy = self
 
 
-    def execute (self,obj):
+    def execute ( self , object : DodecahedronPart ):
 
-        angleribs = 121.717474411
         anglefaces = 116.565051177
+        angleribs = 121.717474411
 
-        radius = float(obj.Radius)
-        if (radius != self.radiusvalue):
-            obj.Side = 4 * radius /  (math.sqrt(3) * ( 1 + math.sqrt(5)))
-            self.radiusvalue = radius
+        radius = float( object.Radius )
+
+        if radius == self.radius :
+            self.radius = float(object.Side * ( sqrt(3) * ( 1 + sqrt(5) ) ) / 4 )
+            object.Radius = self.radius
+            radius = self.radius
         else:
-            self.radiusvalue = float(obj.Side * (math.sqrt(3) * ( 1 + math.sqrt(5))) / 4)
-            obj.Radius = self.radiusvalue
-            radius = self.radiusvalue
+            object.Side = 4 * radius /  ( sqrt(3) * ( 1 + sqrt(5) ) )
+            self.radius = radius
 
         faces = []
-        z = 4 * radius /  (math.sqrt(3) * ( 1 + math.sqrt(5)))
-        r = z/2 * math.sqrt((25 + (11 * math.sqrt(5)))/10)
+
+        z = 4 * radius /  ( sqrt(3) * ( 1 + sqrt(5) ) )
+        r = z / 2 * sqrt( ( 25 + ( 11 * sqrt(5) ) )  / 10 )
+
         # int sphere r is height / 2
 
-        h2 = z * math.sin(angleribs/180 * math.pi)
+        h2 = z * sin( angleribs / 180 * pi )
 
-        #height of the side-tips
-        radius1 = z / 2 / math.sin(36 * math.pi / 180)
-        h5h = (radius1 + radius1 * math.cos(36 * math.pi / 180))   * math.sin(anglefaces * math.pi / 180) #height of the tops
+        # height of the side-tips
 
-        radius2 = radius1 - z * math.cos(angleribs * math.pi / 180 )
-
-        r=(h2 + h5h)/2  # XXX to make it fit!
+        radius1 = z / 2 / sin( 36 * pi / 180 )
 
 
+        # height of the tops
+
+        h5h = ( radius1 + radius1 * cos( 36 * pi / 180 ) )   \
+            * sin( anglefaces * pi / 180 )
+
+        radius2 = radius1 - z * cos( angleribs * pi / 180 )
+
+        # XXX to make it fit!
+        r = ( h2 + h5h ) / 2
 
 
         vertexes_bottom = polygon_Vertexes(5,radius1,-r)
-        vertexes_low = polygon_Vertexes(5,radius2, -r + h2)
-        vertexes_high = polygon_Vertexes(5,radius2, -r + h5h,  math.pi/5)
-        vertexes_top = polygon_Vertexes(5,radius1, r, math.pi/5)
 
-        polygon_bottom = Part.makePolygon(vertexes_bottom)
-        face_bottom = Part.Face(polygon_bottom)
-        faces.append(face_bottom)
+        polygon = makePolygon(vertexes_bottom)
+        face = Face(polygon)
 
-        polygon_top = Part.makePolygon(vertexes_top)
-        face_top = Part.Face(polygon_top)
-        faces.append(face_top)
+        faces.append(face)
 
-        for i in range(5):
-            vertexes_side=[vertexes_bottom[i],vertexes_bottom[i+1],vertexes_low[i+1],vertexes_high[i],vertexes_low[i], vertexes_bottom[i] ]
-            polygon_side=Part.makePolygon(vertexes_side)
-            faces.append(Part.Face(polygon_side))
 
-        for i in range(5):
-            #vertexes_side=[vertexes_top[i],vertexes_top[i+1],vertexes_high[i+1],vertexes_high2[i], vertexes_high[i],vertexes_top[i] ]
-            vertexes_side=[vertexes_top[i],vertexes_top[i+1],vertexes_high[i+1],vertexes_low[i+1],vertexes_high[i],vertexes_top[i] ]
-            polygon_side=Part.makePolygon(vertexes_side)
-            faces.append(Part.Face(polygon_side))
+        vertexes_top = polygon_Vertexes(5,radius1,r, pi / 5 )
 
-        shell = Part.makeShell(faces)
-        solid = Part.makeSolid(shell)
-        obj.Shape = solid
+        polygon = makePolygon(vertexes_top)
+        face = Face(polygon)
+
+        faces.append(face)
+
+
+        vertexes_low = polygon_Vertexes(5,radius2,-r + h2)
+        vertexes_high = polygon_Vertexes(5,radius2,-r + h5h,pi / 5)
+
+        for side in range(5):
+
+            vertexes = [
+                vertexes_bottom[ side ] ,
+                vertexes_bottom[ side + 1 ] ,
+                vertexes_low[ side + 1 ] ,
+                vertexes_high[ side ] ,
+                vertexes_low[ side ],
+                vertexes_bottom[ side ]
+            ]
+
+            polygon = makePolygon(vertexes)
+            face = Face(polygon)
+
+            faces.append(face)
+
+
+        for side in range(5):
+
+            vertexes = [
+                vertexes_top[ side ] ,
+                vertexes_top[ side + 1 ] ,
+                vertexes_high[ side + 1 ] ,
+                vertexes_low[ side + 1 ] ,
+                vertexes_high[ side ] ,
+                vertexes_top[ side ]
+            ]
+
+            polygon = makePolygon(vertexes)
+            face = Face(polygon)
+
+            faces.append(face)
+
+        shell = makeShell(faces)
+        solid = makeSolid(shell)
+        object.Shape = solid

@@ -1,9 +1,9 @@
 
-
 from ..Utils.Vertexes import pyramid_Vertexes
 
-from FreeCAD import DocumentObject , Console , Part , Qt
+from FreeCAD import DocumentObject , Console , Qt
 from typing import Any
+from Part import makePolygon , makeSolid , makeShell , Face
 from math import sin , pi
 
 
@@ -105,23 +105,25 @@ class Pyramid :
 
     def execute ( self , object : PyramidPart ):
 
-        sidescount = object.Sidescount
-        angle = 2 * pi / sidescount
+        sides = object.Sidescount
+        angle = 2 * pi / sides
 
-        sidelength_bottom = float(object.Sidelength1)
-        sidelength_top = float(object.Sidelength2)
+        side_bottom = float(object.Sidelength1)
+        side_top = float(object.Sidelength2)
+
         radius_bottom = float(object.Radius1)
         radius_top = float(object.Radius2)
-        anglez = float(object.Z_rotation)
+
+        angle_z = float(object.Z_rotation)
         height = float(object.Height)
 
-        if radius_bottom != self.radius1value or sidescount != self.sidescountvalue:
+        if radius_bottom != self.radius1value or sides != self.sidescountvalue:
 
             object.Sidelength1 = radius_bottom * sin( angle / 2 ) * 2
             self.radius1value = radius_bottom
             self.side1value = object.Sidelength1
 
-        elif sidelength_bottom != self.side1value:
+        elif side_bottom != self.side1value:
 
             self.radius1value = ( object.Sidelength1 / 2 ) / sin( angle / 2 )
             object.Radius1 = self.radius1value
@@ -130,13 +132,13 @@ class Pyramid :
 
             self.side1value = object.Sidelength1
 
-        if radius_top != self.radius2value or sidescount != self.sidescountvalue:
+        if radius_top != self.radius2value or sides != self.sidescountvalue:
 
             object.Sidelength2 = radius_top * sin( angle / 2 ) * 2
             self.radius2value = radius_top
             self.side2value = object.Sidelength2
 
-        elif sidelength_top != self.side2value:
+        elif side_top != self.side2value:
 
             self.radius2value = ( object.Sidelength2 / 2 ) / sin( angle / 2 )
             object.Radius2 = self.radius2value
@@ -145,7 +147,7 @@ class Pyramid :
 
             self.side2value = object.Sidelength2
 
-        self.sidescountvalue = sidescount
+        self.sidescountvalue = sides
 
         faces = []
 
@@ -153,56 +155,60 @@ class Pyramid :
             Console.PrintMessage('Both radiuses are zero' + '\n')
             return
 
-        vertexes_bottom = pyramid_Vertexes(sidescount,radius_bottom,0,anglez)
-        vertexes_top    = pyramid_Vertexes(sidescount,radius_top,height,anglez)
+        vertexes_bottom = pyramid_Vertexes(sides,radius_bottom,0,angle_z)
+        vertexes_top    = pyramid_Vertexes(sides,radius_top,height,angle_z)
 
-        if radius_bottom != 0:
+        if not radius_bottom == 0:
 
-            polygon_bottom = Part.makePolygon(vertexes_bottom)
-            face_bottom = Part.Face(polygon_bottom)
-            faces.append(face_bottom)
+            polygon = makePolygon(vertexes_bottom)
+            face = Face(polygon)
 
-        if radius_top != 0:
+            faces.append(face)
 
-            polygon_top = Part.makePolygon(vertexes_top)
-            face_top = Part.Face(polygon_top)
-            faces.append(face_top)
+        if not radius_top == 0:
 
-        for i in range( sidescount ):
+            polygon = makePolygon(vertexes_top)
+            face = Face(polygon)
+
+            faces.append(face)
+
+        for side in range( sides ):
 
             if radius_top == 0:
 
-                vertexes_side = [
-                    vertexes_bottom[ i ] ,
-                    vertexes_bottom[ i + 1 ] ,
+                vertexes = [
+                    vertexes_bottom[ side ] ,
+                    vertexes_bottom[ side + 1 ] ,
                     vertexes_top[ 0 ] ,
-                    vertexes_bottom[ i ]
+                    vertexes_bottom[ side ]
                 ]
 
             elif radius_bottom == 0:
 
-                vertexes_side = [
+                vertexes = [
                     vertexes_bottom[ 0 ] ,
-                    vertexes_top[ i + 1 ] ,
-                    vertexes_top[ i ] ,
+                    vertexes_top[ side + 1 ] ,
+                    vertexes_top[ side ] ,
                     vertexes_bottom[ 0 ]
                 ]
 
             else:
 
-                vertexes_side = [
-                    vertexes_bottom[ i ] ,
-                    vertexes_bottom[ i + 1 ] ,
-                    vertexes_top[ i + 1 ] ,
-                    vertexes_top[ i ] ,
-                    vertexes_bottom[ i ]
+                vertexes = [
+                    vertexes_bottom[ side ] ,
+                    vertexes_bottom[ side + 1 ] ,
+                    vertexes_top[ side + 1 ] ,
+                    vertexes_top[ side ] ,
+                    vertexes_bottom[ side ]
                 ]
 
-            polygon_side = Part.makePolygon(vertexes_side)
-            faces.append(Part.Face(polygon_side))
+            polygon = makePolygon(vertexes)
+            face = Face(polygon)
 
-        shell = Part.makeShell(faces)
-        solid = Part.makeSolid(shell)
+            faces.append(face)
+
+        shell = makeShell(faces)
+        solid = makeSolid(shell)
 
         object.Shape = solid
 
