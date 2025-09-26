@@ -2,10 +2,9 @@
 
 from ..Utils.Other import createSolid
 
-from FreeCAD import DocumentObject , Vector , Units , Console , Qt
+from FreeCAD import DocumentObject , Vector , Units , Qt
 from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Point , Face
-from math import sin , pi
 
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
