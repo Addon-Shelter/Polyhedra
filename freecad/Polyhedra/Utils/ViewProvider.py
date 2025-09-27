@@ -1,33 +1,38 @@
 
 from .Resources import icon
 
+from FreeCAD import DocumentObject , Gui
+
+View = Gui.ViewProviderDocumentObject
+
+
 
 class ViewProvider:
 
-    icon : str
+    view : View
 
-    def __init__(
-        self ,
-        obj ,
-        icon : str
-    ):
-        self.icon = icon
-        obj.Proxy = self
+    def __init__( self , view : View ):
+        view.Proxy = self
 
-    def attach ( self , object ):
-        return
+    def attach ( self , view : View ):
+        self.view = view
 
     def updateData ( self , fp , prop ):
-        return
+        pass
 
     def onChanged( self , vobj , prop ):
         pass
 
     def getIcon ( self ):
-        return icon(f'Shapes/{ self.icon }')
 
-    def __setstate__ ( self , state ):
-        return None
+        object : DocumentObject = self.view.Object
 
-    def __getstate__ ( self ):
+        type = object.getPropertyByName('Type')
+
+        return icon(f'Shapes/{ type }')
+
+    def loads ( self , state ):
+        pass
+
+    def dumps ( self ):
         return None

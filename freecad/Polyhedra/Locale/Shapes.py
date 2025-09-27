@@ -1,17 +1,18 @@
 
 from FreeCAD import Qt
 
-t = Qt.QT_TRANSLATE_NOOP
+
+QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 
 Shapes = {
-    'Icosahedron-Truncated' : t('Shapes','Truncated Icosahedron') ,
-    'Geodesic-Sphere' : t('Shapes','Geodesic Sphere') ,
-    'Regular-Solid' : t('Shapes','Regular Solid') ,
-    'Dodecahedron' : t('Shapes','Dodecahedron') ,
-    'Icosahedron' : t('Shapes','Icosahedron') ,
-    'Tetrahedron' : t('Shapes','Tetrahedron') ,
-    'Hexahedron' : t('Shapes','Hexahedron') ,
-    'Octahedron' : t('Shapes','Octahedron') ,
-    'Pyramid' : t('Shapes','Pyramid')
+    'Icosahedron-Truncated' : QT_TRANSLATE_NOOP('Shapes','Truncated Icosahedron') ,
+    'Geodesic-Sphere' : QT_TRANSLATE_NOOP('Shapes','Geodesic Sphere') ,
+    'Regular-Solid' : QT_TRANSLATE_NOOP('Shapes','Regular Solid') ,
+    'Dodecahedron' : QT_TRANSLATE_NOOP('Shapes','Dodecahedron') ,
+    'Icosahedron' : QT_TRANSLATE_NOOP('Shapes','Icosahedron') ,
+    'Tetrahedron' : QT_TRANSLATE_NOOP('Shapes','Tetrahedron') ,
+    'Hexahedron' : QT_TRANSLATE_NOOP('Shapes','Hexahedron') ,
+    'Octahedron' : QT_TRANSLATE_NOOP('Shapes','Octahedron') ,
+    'Pyramid' : QT_TRANSLATE_NOOP('Shapes','Pyramid')
 }

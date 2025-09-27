@@ -60,11 +60,24 @@ class Command:
         if not document:
             return
 
-        object : DocumentObject = document.addObject('Part::FeaturePython',name)
+        object : DocumentObject = document \
+            .addObject('Part::FeaturePython',name)
+
+        object.addProperty(
+            read_only = True ,
+            hidden = True ,
+            type = 'App::PropertyString',
+            name = 'Type'
+        )
+
+        object.Type = self.icon
+
+        view = object.ViewObject
+
+        if view:
+            ViewProvider(view)
 
         shape(object)
-
-        ViewProvider(object.ViewObject,self.icon)
 
         document.recompute()
 
