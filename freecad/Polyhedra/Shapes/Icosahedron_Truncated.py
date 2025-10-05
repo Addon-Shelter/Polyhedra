@@ -13,6 +13,9 @@ QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
 class Icosahedron_Truncated:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Icosahedron_Truncated'
+
     radiusvalue = 0
 
     def __init__(self, obj, radius=5):

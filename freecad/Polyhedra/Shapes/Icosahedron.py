@@ -21,6 +21,9 @@ class IcosahedronPart ( DocumentObject ):
 
 class Icosahedron:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Icosahedron'
+
     radius = 0
 
     def __init__ (

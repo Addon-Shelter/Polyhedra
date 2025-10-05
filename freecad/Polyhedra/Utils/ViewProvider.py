@@ -6,13 +6,16 @@ from FreeCAD import DocumentObject , Gui
 View = Gui.ViewProviderDocumentObject
 
 
-
 class ViewProvider:
+
+    __module__ = 'Virtual.Polyhedra.ViewProviders'
+    __name__ = 'ViewProvider'
 
     view : View
 
     def __init__( self , view : View ):
         view.Proxy = self
+        self.view = view
 
     def attach ( self , view : View ):
         self.view = view

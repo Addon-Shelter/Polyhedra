@@ -20,6 +20,9 @@ class TetrahedronPart ( DocumentObject ):
 
 class Tetrahedron:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Tetrahedron'
+
     # == basics ==
     #R = z / 4 * sqrt(6)
     #ro = z / 12 * sqrt(6)    -->   ro = R / 3

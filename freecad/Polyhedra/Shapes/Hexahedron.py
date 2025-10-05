@@ -20,6 +20,9 @@ class HexahedronPart ( DocumentObject ):
 
 class Hexahedron:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Hexahedron'
+
     radius = 0
 
     def __init__ (

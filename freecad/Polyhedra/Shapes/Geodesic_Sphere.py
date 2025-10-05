@@ -26,6 +26,9 @@ class GeodesicSpherePart ( DocumentObject ):
 
 class Geodesic_Sphere:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Geodesic_Sphere'
+
     divided_by : int = 2
     radius : float = 0
 

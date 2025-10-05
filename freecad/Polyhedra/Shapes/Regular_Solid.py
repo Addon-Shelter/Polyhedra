@@ -35,6 +35,9 @@ class RegularSolidPart ( DocumentObject ):
 
 class Regular_Solid:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Regular_Solid'
+
     enums = {
 
         'Source' : (

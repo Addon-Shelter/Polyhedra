@@ -2,8 +2,10 @@
 from os.path import join
 from FreeCAD import Gui
 
-from .Utils.Files import getWorkbenchFolder
+import freecad.Polyhedra.Migration
 
+
+from .Utils.Files import getWorkbenchFolder
 
 translations = join(getWorkbenchFolder(),'Resources','Translations')
 

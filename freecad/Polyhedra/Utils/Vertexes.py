@@ -33,7 +33,7 @@ def pyramid_Vertexes (
     sides : int ,
     radius : float ,
     z : float ,
-    anglez : float = 0 # Degrees
+    angle_z : float = 0
 ):
 
     if radius == 0:
@@ -48,7 +48,7 @@ def pyramid_Vertexes (
         angle =                                 \
             ( pi * ( odd / sides + 0.5 ) ) +    \
             2 * pi * index / sides +            \
-            anglez * pi / 180
+            angle_z * pi / 180
 
         x = radius * cos(angle)
         y = radius * sin(angle)

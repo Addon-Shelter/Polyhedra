@@ -20,6 +20,9 @@ class OctahedronPart ( DocumentObject ):
 
 class Octahedron:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Octahedron'
+
     # Z = R * sqrt(2)
     radius = 0
 

@@ -25,6 +25,9 @@ class PyramidPart ( DocumentObject ):
 
 class Pyramid :
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Pyramid'
+
     sidescountvalue = 0
     radius1value = 0
     radius2value = 0

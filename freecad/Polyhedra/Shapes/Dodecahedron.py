@@ -20,6 +20,9 @@ class DodecahedronPart ( DocumentObject ):
 
 class Dodecahedron:
 
+    __module__ = 'Virtual.Polyhedra.Parts'
+    __name__ = 'Dodecahedron'
+
     radius = 0
 
     def __init__ (
