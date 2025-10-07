@@ -19,13 +19,16 @@
     <tag>Extension</tag>
     <tag>Polyhedra</tag>
     <tag>Polyhedron</tag>
-    <tag>Geodesic Sphere</tag>
+    <tag>Cube</tag>
+    <tag>Geodesic</tag>
+    <tag>Sphere</tag>
     <tag>Hexahedron</tag>
     <tag>Icosahedron</tag>
     <tag>Truncated</tag>
     <tag>Octahedron</tag>
     <tag>Pyramid</tag>
-    <tag>Regular Solid</tag>
+    <tag>Regular</tag>
+    <tag>Solid</tag>
     <tag>Tetrahedron</tag>
 
     <maintainer
@@ -51,7 +54,7 @@
 
     <url
         type = 'readme'
-    >https://github.com/Addon-Shelter/Polyhedra/blob/Latest/README.md</url>
+    >https://github.com/Addon-Shelter/Polyhedra/blob/Latest/Resources/Documents/Overview.md</url>
 
     <url
         type = 'bugtracker'

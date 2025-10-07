@@ -15,21 +15,30 @@ The following shapes can be generated:
 <tr>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Tetrahedron.webp' height = 64 />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Tetrahedron.webp' 
+/>
 
 **Tetrahedron**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Hexahedron.webp' height = 64 />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Hexahedron.webp' 
+/>
 
 **Hexahedron**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Pyramid.webp' height = 64 />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Pyramid.webp' 
+/>
 
 **Pyramid**
 
@@ -38,21 +47,30 @@ The following shapes can be generated:
 <tr>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Octahedron.webp' height = 64 center />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Octahedron.webp' 
+/>
 
 **Octahedron**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Icosahedron.webp' height = 64 center />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Icosahedron.webp' 
+/>
 
 **Icosahedron**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Dodecahedron.webp' height = 64 center />
+<img 
+    height = '64' 
+    src = './Resources/Animations/Dodecahedron.webp' 
+/>
 
 **Dodecahedron**
 
@@ -61,21 +79,30 @@ The following shapes can be generated:
 <tr>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Regular-Solid.webp' height = 64 center />
+<img 
+    height = '64'
+    src = './Resources/Animations/Regular-Solid.webp' 
+/>
 
 **Regular** <br/> **Solid**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Truncated-Icosahedron.webp' height = 64 center />
+<img 
+    height = '64'
+    src = './Resources/Animations/Truncated-Icosahedron.webp' 
+/>
 
 **Truncated** <br/> **Icosahedron**
 
 </td>
 <td align = 'center' >
 
-<img src = './Resources/Animations/Geodesic-Sphere.webp' height = 64 center />
+<img 
+    height = '64'
+    src = './Resources/Animations/Geodesic-Sphere.webp' 
+/>
 
 **Geodesic** <br/> **Sphere**
 
