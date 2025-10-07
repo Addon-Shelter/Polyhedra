@@ -3,6 +3,7 @@ import FreeCAD
 
 from .Utils.ViewProvider import ViewProvider
 from .Utils.Resources import icon
+from .Utils.Version import Version
 from .Locale import Shapes
 
 from .PySide.QtCore import SIGNAL
@@ -67,10 +68,18 @@ class Command:
             read_only = True ,
             hidden = True ,
             type = 'App::PropertyString',
+            name = 'Version'
+        )
+
+        object.addProperty(
+            read_only = True ,
+            hidden = True ,
+            type = 'App::PropertyString',
             name = 'Type'
         )
 
-        object.Type = self.icon
+        setattr(object,'Version',Version)
+        setattr(object,'Type',self.icon)
 
         view = object.ViewObject
 

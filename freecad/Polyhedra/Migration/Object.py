@@ -1,6 +1,7 @@
 
 from ..Utils.ViewProvider import ViewProvider
 
+from ..Utils.Version import Version
 from FreeCAD import GuiUp
 
 import freecad.Polyhedra.Shapes as Shapes
@@ -27,9 +28,17 @@ def MigrationPart ( type : str ):
                 read_only = True ,
                 hidden = True ,
                 type = 'App::PropertyString',
+                name = 'Version'
+            )
+
+            object.addProperty(
+                read_only = True ,
+                hidden = True ,
+                type = 'App::PropertyString',
                 name = 'Type'
             )
 
+            object.Version = Version
             object.Type = type
 
             if GuiUp:
