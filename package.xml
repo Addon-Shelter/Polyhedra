@@ -43,7 +43,7 @@
 
     <license
         file = 'LICENSE'
-    >GPL-2.0</license>
+    >GPL-3.0-or-later</license>
 
     <icon>freecad/Polyhedra/Resources/Icons/Addon.svg</icon>
 
