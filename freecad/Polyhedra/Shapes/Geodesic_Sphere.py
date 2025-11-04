@@ -1,14 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import Part
-import math
 
-from ..Utils.Geodesic import geodesic_radius2side , geodesic_side2radius
+from ..Utils.Geodesic import radiusToSide , sideToRadius
 from ..Utils.Vertexes import polygon_Vertexes
 
 from FreeCAD import DocumentObject , Vector , Units , Qt
 from typing import Any
-from Part import makePolygon , makeSolid , makeShell , Face
+from Part import makeSolid , makeShell , Face
 from math import sqrt , acos , sin , pi
 
 
@@ -85,28 +84,28 @@ class Geodesic_Sphere:
         vector1 = ( Vector(vertex2) - Vector(vertex1) ) / self.divided_by
         vector2 = ( Vector(vertex3) - Vector(vertex2) ) / self.divided_by
 
-        icosaPt = {}
+        points = {}
 
 
-        icosaPt[ str(1) ] = Vector(vertex1)
+        points[ str(1) ] = Vector(vertex1)
 
 
         for level in range( self.divided_by ) :
 
             l1 = level + 1
-            icosaPt[ str( l1 * 10 + 1 ) ] = icosaPt[ str(1) ] + vector1 * (l1)
+            points[ str( l1 * 10 + 1 ) ] = points[ str(1) ] + vector1 * (l1)
 
             for pt in range( level + 1 ):
-                icosaPt[ str( l1 * 10 + 2 + pt ) ] = icosaPt[ str( l1 * 10 + 1 ) ] + vector2 * ( pt + 1 )
+                points[ str( l1 * 10 + 2 + pt ) ] = points[ str( l1 * 10 + 1 ) ] + vector2 * ( pt + 1 )
 
 
         for level in range( self.divided_by ) :
 
             for point in range( level + 1 ) :
 
-                vertex1x = icosaPt[ str( level * 10 +  1 + point ) ].normalize().multiply(self.radius)
-                vertex2x = icosaPt[ str( level * 10 + 11 + point ) ].normalize().multiply(self.radius)
-                vertex3x = icosaPt[ str( level * 10 + 12 + point ) ].normalize().multiply(self.radius)
+                vertex1x = points[ str( level * 10 +  1 + point ) ].normalize().multiply(self.radius)
+                vertex2x = points[ str( level * 10 + 11 + point ) ].normalize().multiply(self.radius)
+                vertex3x = points[ str( level * 10 + 12 + point ) ].normalize().multiply(self.radius)
 
                 vertexes = [ vertex1x , vertex2x , vertex3x , vertex1x ]
 
@@ -118,9 +117,9 @@ class Geodesic_Sphere:
 
             for point in range(level):
 
-                vertex1x = icosaPt[ str( level * 10 +  1 + point ) ].normalize().multiply(self.radius)
-                vertex2x = icosaPt[ str( level * 10 +  2 + point ) ].normalize().multiply(self.radius)
-                vertex3x = icosaPt[ str( level * 10 + 12 + point ) ].normalize().multiply(self.radius)
+                vertex1x = points[ str( level * 10 +  1 + point ) ].normalize().multiply(self.radius)
+                vertex2x = points[ str( level * 10 +  2 + point ) ].normalize().multiply(self.radius)
+                vertex3x = points[ str( level * 10 + 12 + point ) ].normalize().multiply(self.radius)
 
                 vertexes = [ vertex1x , vertex2x , vertex3x , vertex1x ]
 
@@ -135,28 +134,28 @@ class Geodesic_Sphere:
 
     def execute ( self , object : GeodesicSpherePart ):
 
-        object.DividedBy = int(round(object.DividedBy))
+        divisions = object.DividedBy
 
-        if object.DividedBy <= 0:
-            object.DividedBy = 1
+        divisions = int( round(divisions) )
 
-        if object.DividedBy > 10:
-            object.DividedBy = 10
+        divisions = max( 1 , min( divisions , 10 ) )
+
+        object.DividedBy = divisions
 
 
         radius = object.Radius.Value
         side = object.Side.Value
 
-        if radius != self.radius or object.DividedBy != self.divided_by:
-            self.divided_by = object.DividedBy
-            object.Side.Value = geodesic_radius2side(radius,self.divided_by)
+        if radius != self.radius or divisions != self.divided_by:
+            self.divided_by = divisions
+            object.Side.Value = radiusToSide(radius,self.divided_by)
             self.radius = radius
         else:
-            self.radius = geodesic_side2radius(side,self.divided_by)
+            self.radius = sideToRadius(side,self.divided_by)
             object.Radius.Value = self.radius
             radius = self.radius
 
-        self.divided_by = object.DividedBy
+        self.divided_by = divisions
 
         z = 4 * radius / sqrt( 10 + 2 * sqrt(5) )
 

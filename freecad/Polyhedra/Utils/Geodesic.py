@@ -9,53 +9,54 @@ from math import sqrt
 #
 
 Sides = {
-    '2' : 618.034 ,
-    '3' : 412.41 ,
-    '4' : 312.87 ,
-    '5' : 245.09 ,
-    '6' : 205.91 ,
-    '7' : 173.53 ,
-    '8' : 152.96 ,
-    '9' : 135.96 ,
-    '10' : 121.55
+    '10' : 121.550 ,
+     '9' : 135.960 ,
+     '8' : 152.960 ,
+     '7' : 173.530 ,
+     '6' : 205.910 ,
+     '5' : 245.090 ,
+     '4' : 312.870 ,
+     '3' : 412.410 ,
+     '2' : 618.034
 }
 
 
-def geodesic_radius2side (
+def radiusToSide (
     radius : float ,
-    div : int
+    divisions : int
 ):
 
-    div = int(round(div))
+    divisions = int( round(divisions) )
 
-    if div < 0:
+    if divisions < 0 :
         return 0
 
-    if div == 1:
+    if divisions == 1 :
         return radius * 4 / sqrt( 10 + 2 * sqrt(5) )
-    elif div <= 10:
-        factor = Sides[ str(div) ]
+
+    if divisions <= 10 :
+        factor = Sides[ str(divisions) ]
         return radius * factor / 1000
 
     return 0
 
 
-def geodesic_side2radius (
+def sideToRadius (
     side : float ,
-    div : int
+    divisions : int
 ):
 
 
-    div = int(round(div))
+    divisions = int(round(divisions))
 
-    if div < 0:
+    if divisions < 0 :
         return 0
 
-    if div == 1:
+    if divisions == 1 :
         return side / 4 * sqrt( 10 + 2 * sqrt(5) )
 
-    if div <= 10:
-        factor = Sides[ str(div) ]
+    if divisions <= 10 :
+        factor = Sides[ str(divisions) ]
         return side * 1000 / factor
 
     return 0
