@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 from ..Utils.Vertexes import pyramid_Vertexes
 

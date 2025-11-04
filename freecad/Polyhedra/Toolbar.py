@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 from .PySide.QtWidgets import QMainWindow , QToolBar
 from .PySide.QtCore import QTimer

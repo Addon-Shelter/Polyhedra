@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 from .Icosahedron_Truncated import Icosahedron_Truncated
 from .Geodesic_Sphere import Geodesic_Sphere

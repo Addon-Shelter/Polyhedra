@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 
 # The following code section provides an object that can be parameterised to produce any of the platonic, archimedean and catalan
