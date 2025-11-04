@@ -1,22 +1,25 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-
-# The following code section provides an object that can be parameterised to produce any of the platonic, archimedean and catalan
-# solids, and more, by starting with one of the five platonic solids and then truncating vertices respectively edges.
+#
+#   The following code section provides an object that can be
+#   parameterized to produce any of the platonic, archimedean
+#   and catalan solids, and more, by starting with one of the
+#   five platonic solids and then truncating vertices respectively edges.
+#
 
 from functools import reduce
 from math import sqrt
 
 from FreeCAD import Vector
 
-# The python code of the following three functions "vSum", "source" and "createSolid" is taken from Blenders add_mesh_solid.py
+
+def sum ( values : list[ Vector ] ):
+    return reduce( lambda a , b : a.add(b) , values )
+
+
+# The python code of the following three functions "source" and "createSolid" is taken from Blenders add_mesh_solid.py
 # from the "Add Mesh Extra Objects" addon, authored by Dreampainter, licensed as SPDX-License-Identifier GPL-2.0-or-later,
 # refer https://github.com/blender/blender-addons/blob/master/add_mesh_extra_objects/add_mesh_solid.py.
-
-# function to make the reduce function work as a workaround to sum a list of vectors
-
-def vSum(list):
-    return reduce(lambda a, b: a.add(b), list)
 
 
 # creates the 5 platonic solids as a base for the rest
@@ -109,7 +112,7 @@ def createSolid(plato, vtrunc, etrunc, dual, snub):
     if vtrunc == 0:
         if dual:  # dual is as simple as another, but mirrored platonic solid
             vInput, fInput = source(dualSource[plato])
-            supposedSize = vSum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
+            supposedSize = sum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
             vInput = [-i * supposedSize for i in vInput]            # mirror it
             return vInput, fInput
         return source(plato)
@@ -118,7 +121,7 @@ def createSolid(plato, vtrunc, etrunc, dual, snub):
     else:
         # truncation is now equal to simple truncation of the dual of the source
         vInput, fInput = source(dualSource[plato])
-        supposedSize = vSum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
+        supposedSize = sum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
         vtrunc = 1 - vtrunc  # account for the source being a dual
         if vtrunc == 0:    # no truncation needed
             if dual:
@@ -232,7 +235,7 @@ def createSolid(plato, vtrunc, etrunc, dual, snub):
 
     # calculate supposed vertex length to ensure continuity
     if supposedSize and not dual:                    # this to make the vtrunc > 1 work
-        supposedSize *= len(fvOutput[0]) / vSum(vOutput[i] for i in fvOutput[0]).Length
+        supposedSize *= len(fvOutput[0]) / sum(vOutput[i] for i in fvOutput[0]).Length
         vOutput = [-i * supposedSize for i in vOutput]
 
     # create new faces by replacing old vert IDs by newly generated verts
@@ -271,7 +274,7 @@ def createSolid(plato, vtrunc, etrunc, dual, snub):
                     vDict[i[j - 1]][-1] = i[j]
 
         # calculate supposed size for continuity
-        supposedSize = vSum([vInput[i] for i in fInput[0]]).Length / len(fInput[0])
+        supposedSize = sum([vInput[i] for i in fInput[0]]).Length / len(fInput[0])
         supposedSize /= dvOutput[-1].Length
         dvOutput = [i * supposedSize for i in dvOutput]
 
