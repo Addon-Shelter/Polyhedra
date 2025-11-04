@@ -42,8 +42,16 @@
     >PhoneDroid</author>
 
     <license
-        file = 'LICENSE'
+        file = 'LICENSE-CODE'
     >GPL-3.0-or-later</license>
+
+    <license
+        file = 'LICENSE-ICON'
+    >CC-BY-SA-4.0</license>
+
+    <license
+        file = 'LICENSE-DOCS'
+    >UNLICENSE</license>
 
     <icon>freecad/Polyhedra/Resources/Icons/Addon.svg</icon>
 
