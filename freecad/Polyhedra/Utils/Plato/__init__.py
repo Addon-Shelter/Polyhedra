@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileNotice: Part of the Polyhedra addon.
 
 from .Dodecahedron import plato as Dodecahedron
 from .Icosahedron import plato as Icosahedron

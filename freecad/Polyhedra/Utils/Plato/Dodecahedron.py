@@ -1,5 +1,6 @@
 # SPDX-FileAttributionText: Based on the Blender Add-Mesh-Extra-Objects addon.
 # SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-FileNotice: Part of the Polyhedra addon.
 
 from math import sqrt as sqrt
 
