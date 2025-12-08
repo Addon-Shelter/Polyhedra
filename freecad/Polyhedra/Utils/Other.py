@@ -8,7 +8,6 @@
 #
 
 from functools import reduce
-from math import sqrt
 
 from FreeCAD import Vector
 
@@ -17,7 +16,10 @@ def sum ( values : list[ Vector ] ):
     return reduce( lambda a , b : a.add(b) , values )
 
 
-# The python code of the following three functions "source" and "createSolid" is taken from Blenders add_mesh_solid.py
+from .Plato import plato as source , PlatoType
+
+
+# The python code of the following three functions "createSolid" is taken from Blenders add_mesh_solid.py
 # from the "Add Mesh Extra Objects" addon, authored by Dreampainter, licensed as SPDX-License-Identifier GPL-2.0-or-later,
 # refer https://github.com/blender/blender-addons/blob/master/add_mesh_extra_objects/add_mesh_solid.py.
 
@@ -27,78 +29,16 @@ def sum ( values : list[ Vector ] ):
 #         outcome will be.
 #  returns a list of vertices and faces
 
-def source(plato):
-    verts = []
-    faces = []
-
-    # Tetrahedron
-    if plato == "4":
-        # Calculate the necessary constants
-        s = sqrt(2) / 3.0
-        t = -1 / 3
-        u = sqrt(6) / 3
-
-        # create the vertices and faces
-        v = [(0, 0, 1), (2 * s, 0, t), (-s, u, t), (-s, -u, t)]
-        faces = [[0, 1, 2], [0, 2, 3], [0, 3, 1], [1, 3, 2]]
-
-    # Hexahedron (cube)
-    elif plato == "6":
-        # Calculate the necessary constants
-        s = 1 / sqrt(3)
-
-        # create the vertices and faces
-        v = [(-s, -s, -s), (s, -s, -s), (s, s, -s), (-s, s, -s), (-s, -s, s), (s, -s, s), (s, s, s), (-s, s, s)]
-        faces = [[0, 3, 2, 1], [0, 1, 5, 4], [0, 4, 7, 3], [6, 5, 1, 2], [6, 2, 3, 7], [6, 7, 4, 5]]
-
-    # Octahedron
-    elif plato == "8":
-        # create the vertices and faces
-        v = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]
-        faces = [[4, 0, 2], [4, 2, 1], [4, 1, 3], [4, 3, 0], [5, 2, 0], [5, 1, 2], [5, 3, 1], [5, 0, 3]]
-
-    # Dodecahedron
-    elif plato == "12":
-        # Calculate the necessary constants
-        s = 1 / sqrt(3)
-        t = sqrt((3 - sqrt(5)) / 6)
-        u = sqrt((3 + sqrt(5)) / 6)
-
-        # create the vertices and faces
-        v = [(s, s, s), (s, s, -s), (s, -s, s), (s, -s, -s), (-s, s, s), (-s, s, -s), (-s, -s, s), (-s, -s, -s),
-             (t, u, 0), (-t, u, 0), (t, -u, 0), (-t, -u, 0), (u, 0, t), (u, 0, -t), (-u, 0, t), (-u, 0, -t), (0, t, u),
-             (0, -t, u), (0, t, -u), (0, -t, -u)]
-        faces = [[0, 8, 9, 4, 16], [0, 12, 13, 1, 8], [0, 16, 17, 2, 12], [8, 1, 18, 5, 9], [12, 2, 10, 3, 13],
-                 [16, 4, 14, 6, 17], [9, 5, 15, 14, 4], [6, 11, 10, 2, 17], [3, 19, 18, 1, 13], [7, 15, 5, 18, 19],
-                 [7, 11, 6, 14, 15], [7, 19, 3, 10, 11]]
-
-    # Icosahedron
-    elif plato == "20":
-        # Calculate the necessary constants
-        s = (1 + sqrt(5)) / 2
-        t = sqrt(1 + s * s)
-        s = s / t
-        t = 1 / t
-
-        # create the vertices and faces
-        v = [(s, t, 0), (-s, t, 0), (s, -t, 0), (-s, -t, 0), (t, 0, s), (t, 0, -s), (-t, 0, s), (-t, 0, -s),
-             (0, s, t), (0, -s, t), (0, s, -t), (0, -s, -t)]
-        faces = [[0, 8, 4], [0, 5, 10], [2, 4, 9], [2, 11, 5], [1, 6, 8], [1, 10, 7], [3, 9, 6], [3, 7, 11],
-                 [0, 10, 8], [1, 8, 10], [2, 9, 11], [3, 11, 9], [4, 2, 0], [5, 0, 2], [6, 1, 3], [7, 3, 1],
-                 [8, 6, 4], [9, 4, 6], [10, 5, 7], [11, 7, 5]]
-
-    # convert the tuples to Vectors
-    verts = [Vector(i) for i in v]
-
-    return verts, faces
 
 def createSolid(plato, vtrunc, etrunc, dual, snub):
     # the duals from each platonic solid
-    dualSource = {"4": "4",
-                  "6": "8",
-                  "8": "6",
-                  "12": "20",
-                  "20": "12"}
+    dualSource : dict[ PlatoType , PlatoType ] = {
+        '4': '4',
+        '6': '8',
+        '8': '6',
+        '12': '20',
+        '20': '12'
+    }
 
     # constants saving space and readability
     vtrunc *= 0.5
