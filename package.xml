@@ -8,38 +8,49 @@
     xmlns = 'https://wiki.freecad.org/Package_Metadata'
 >
 
+    <!--[ Versions ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
+
     <freecadmin>1.0.0</freecadmin>
-    <version>0.2.0</version>
-    <date>2025-09-21</date>
+    <version>0.2.1</version>
+    <date>2025-12-08</date>
+
+    <!--[ Info ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <description>Create various polyhedrons in the Part workbench.</description>
     <name>Polyhedra</name>
 
-    <tag>Part</tag>
-    <tag>Extension</tag>
-    <tag>Polyhedra</tag>
-    <tag>Polyhedron</tag>
-    <tag>Cube</tag>
-    <tag>Geodesic</tag>
-    <tag>Sphere</tag>
-    <tag>Hexahedron</tag>
-    <tag>Icosahedron</tag>
-    <tag>Truncated</tag>
-    <tag>Octahedron</tag>
-    <tag>Pyramid</tag>
-    <tag>Regular</tag>
-    <tag>Solid</tag>
+    <!--[ Tags ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
+
+    <tag>Geodesic Sphere</tag>
+    <tag>Regular Solid</tag>
     <tag>Tetrahedron</tag>
+    <tag>Icosahedron</tag>
+    <tag>Hexahedron</tag>
+    <tag>Octahedron</tag>
+    <tag>Polyhedron</tag>
+    <tag>Polyhedra</tag>
+    <tag>Truncated</tag>
+    <tag>Pyramid</tag>
+    <tag>Cube</tag>
+
+    <tag>Extension</tag>
+    <tag>Part</tag>
+
+    <!--[ Maintainers ]――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <maintainer
         email = 'PhoneDroid.FGL@proton.me'
     >PhoneDroid</maintainer>
+
+    <!--[ Authors ]――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <author>Eddy Verlinden</author>
 
     <author
         email = 'PhoneDroid.FGL@proton.me'
     >PhoneDroid</author>
+
+    <!--[ Licenses ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <license
         file = 'LICENSE-CODE'
@@ -53,7 +64,15 @@
         file = 'LICENSE-DOCS'
     >UNLICENSE</license>
 
+    <!--[ Icon ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
+
     <icon>freecad/Polyhedra/Resources/Icons/Addon.svg</icon>
+
+    <!--[ Urls ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
+
+    <url
+        type = 'documentation'
+    >https://github.com/Addon-Shelter/Polyhedra</url>
 
     <url
         branch = 'Latest'
@@ -61,12 +80,14 @@
     >https://github.com/Addon-Shelter/Polyhedra</url>
 
     <url
+        type = 'bugtracker'
+    >https://github.com/Addon-Shelter/Polyhedra/issues</url>
+
+    <url
         type = 'readme'
     >https://github.com/Addon-Shelter/Polyhedra/blob/Latest/Resources/Documents/Overview.md</url>
 
-    <url
-        type = 'bugtracker'
-    >https://github.com/Addon-Shelter/Polyhedra/issues</url>
+    <!--[ Content ]――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <content>
         <other></other>
