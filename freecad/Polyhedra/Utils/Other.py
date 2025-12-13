@@ -31,8 +31,16 @@ from .Plato import plato as source , PlatoType
 #  returns a list of vertices and faces
 
 
-def createSolid(plato, vtrunc, etrunc, dual, snub):
+def createSolid (
+    plato : PlatoType ,
+    vtrunc : float ,
+    etrunc : float ,
+    dual : bool ,
+    snub : str
+):
+
     # the duals from each platonic solid
+
     dualSource : dict[ PlatoType , PlatoType ] = {
         '4': '4',
         '6': '8',
@@ -42,8 +50,10 @@ def createSolid(plato, vtrunc, etrunc, dual, snub):
     }
 
     # constants saving space and readability
+
     vtrunc *= 0.5
     etrunc *= 0.5
+
     supposedSize = 0
     noSnub = (snub == "None") or (etrunc == 0.5) or (etrunc == 0)
     lSnub = (snub == "Left") and (0 < etrunc < 0.5)

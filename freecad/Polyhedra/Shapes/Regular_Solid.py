@@ -2,6 +2,7 @@
 # SPDX-FileNotice: Part of the Polyhedra addon.
 
 from ..Utils.Other import createSolid
+from ..Utils.Plato import PlatoType
 
 from FreeCAD import DocumentObject , Vector , Units , Qt
 from typing import Any
@@ -10,13 +11,13 @@ from Part import makePolygon , makeSolid , makeShell , Point , Face
 
 QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
 
-Sources = (
+Sources : list[ tuple[ PlatoType , str , str ] ] = [
     (  '4' , 'Tetrahedron'  , '' ) ,
     (  '6' , 'Hexahedron'   , '' ) ,
     (  '8' , 'Octahedron'   , '' ) ,
     ( '12' , 'Dodecahedron' , '' ) ,
     ( '20' , 'Icosahedron'  , '' )
-)
+]
 
 Snubs = (
     (  'None' , 'No Snub'    , '' ) ,
@@ -65,33 +66,33 @@ Size_Names = [
 
 # actual preset values (Source, Vtrunc, Etrunc, Dual, Snub)
 
-Preset_Values = {
-      't4' : [  '4' , 2 / 3, 0, 0, 'None' ] ,
-      'r4' : [  '4' , 1, 1, 0, 'None' ] ,
-      't6' : [  '6' , 2 / 3, 0, 0, 'None' ] ,
-      't8' : [  '8' , 2 / 3, 0, 0, 'None' ] ,
-      'b6' : [  '6' , 1.0938, 1, 0, 'None' ] ,
-      'c6' : [  '6' , 1.0572, 0.585786, 0, 'None' ] ,
-      's6' : [  '6' , 1.0875, 0.704, 0, 'Left' ] ,
-     'r12' : [ '12' , 1, 0, 0, 'None' ] ,
-     't12' : [ '12' , 2 / 3, 0, 0, 'None' ] ,
-     't20' : [ '20' , 2 / 3, 0, 0, 'None' ] ,
-     'b12' : [ '12' , 1.1338, 1, 0, 'None' ] ,
-     'c12' : [ '20' , 0.921, 0.553, 0, 'None' ] ,
-     's12' : [ '12' , 1.1235, 0.68, 0, 'Left' ] ,
-     'dt4' : [  '4' , 2 / 3, 0, 1, 'None' ] ,
-     'dr4' : [  '4' , 1, 1, 1, 'None' ] ,
-     'dt6' : [  '6' , 2 / 3, 0, 1, 'None' ] ,
-     'dt8' : [  '8' , 2 / 3, 0, 1, 'None' ] ,
-     'db6' : [  '6' , 1.0938, 1, 1, 'None' ] ,
-     'dc6' : [  '6' , 1.0572, 0.585786, 1, 'None' ] ,
-     'ds6' : [  '6' , 1.0875, 0.704, 1, 'Left' ] ,
-    'dr12' : [ '12' , 1, 0, 1, 'None' ] ,
-    'dt12' : [ '12' , 2 / 3, 0, 1, 'None' ] ,
-    'dt20' : [ '20' , 2 / 3, 0, 1, 'None' ] ,
-    'db12' : [ '12' , 1.1338, 1, 1, 'None' ] ,
-    'dc12' : [ '20' , 0.921, 0.553, 1, 'None' ] ,
-    'ds12' : [ '12' , 1.1235, 0.68, 1, 'Left' ]
+Preset_Values : dict[ str , tuple[ PlatoType , float , float , bool , str ] ] = {
+      't4' : (  '4' , 2 / 3, 0, False , 'None' ) ,
+      'r4' : (  '4' , 1, 1, False , 'None' ) ,
+      't6' : (  '6' , 2 / 3, 0, False , 'None' ) ,
+      't8' : (  '8' , 2 / 3, 0, False , 'None' ) ,
+      'b6' : (  '6' , 1.0938, 1, False , 'None' ) ,
+      'c6' : (  '6' , 1.0572, 0.585786, False , 'None' ) ,
+      's6' : (  '6' , 1.0875, 0.704, False , 'Left' ) ,
+     'r12' : ( '12' , 1, 0, False , 'None' ) ,
+     't12' : ( '12' , 2 / 3, 0, False , 'None' ) ,
+     't20' : ( '20' , 2 / 3, 0, False , 'None' ) ,
+     'b12' : ( '12' , 1.1338, 1, False , 'None' ) ,
+     'c12' : ( '20' , 0.921, 0.553, False , 'None' ) ,
+     's12' : ( '12' , 1.1235, 0.68, False , 'Left' ) ,
+     'dt4' : (  '4' , 2 / 3, 0, True , 'None' ) ,
+     'dr4' : (  '4' , 1, 1, True , 'None' ) ,
+     'dt6' : (  '6' , 2 / 3, 0, True , 'None' ) ,
+     'dt8' : (  '8' , 2 / 3, 0, True , 'None' ) ,
+     'db6' : (  '6' , 1.0938, 1, True , 'None' ) ,
+     'dc6' : (  '6' , 1.0572, 0.585786, True , 'None' ) ,
+     'ds6' : (  '6' , 1.0875, 0.704, True , 'Left' ) ,
+    'dr12' : ( '12' , 1, 0, True , 'None' ) ,
+    'dt12' : ( '12' , 2 / 3, 0, True , 'None' ) ,
+    'dt20' : ( '20' , 2 / 3, 0, True , 'None' ) ,
+    'db12' : ( '12' , 1.1338, 1, True , 'None' ) ,
+    'dc12' : ( '20' , 0.921, 0.553, True , 'None' ) ,
+    'ds12' : ( '12' , 1.1235, 0.68, True , 'Left' )
 }
 
 
@@ -196,7 +197,7 @@ class Regular_Solid:
             # The preset is as it was, or it was set to 'Custom'.
             # Check if the user has changed a parameter affecting the preset
 
-            plato = [ source[0] for source in Sources if source[1] == object.Source ][0]
+            plato = [ source for source in Sources if source[1] == object.Source ][0][0]
 
             vtrunc = object.Vtrunc
             etrunc = object.Etrunc
