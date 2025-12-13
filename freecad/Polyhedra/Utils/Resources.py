@@ -3,9 +3,19 @@
 
 import freecad.Polyhedra as module
 from importlib import resources
+from os.path import dirname , join
+from typing import TypedDict
 
 
 icons = resources.files(module) / 'Resources/Icons'
+
+class Paths ( TypedDict ):
+    translations : str
+
+paths : Paths = {
+    'translations' : join(dirname(__file__),'..','Resources','Translations')
+}
+
 
 
 def icon ( name : str ):

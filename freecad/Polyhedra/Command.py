@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileNotice: Part of the Polyhedra addon.
 
-import FreeCAD
-
 from .Utils.ViewProvider import ViewProvider
 from .Utils.Resources import icon
 from .Utils.Version import Version
@@ -12,7 +10,7 @@ from .PySide.QtWidgets import QToolBar
 from .PySide.QtCore import SIGNAL
 from .PySide.QtGui import QAction , QIcon
 
-from FreeCAD import DocumentObject , Gui , Qt
+from FreeCAD import DocumentObject , activeDocument , Gui , Qt
 from typing import Any
 
 
@@ -66,7 +64,7 @@ class Command:
         shape = self.shape
         name = self.name
 
-        document = FreeCAD.ActiveDocument
+        document = activeDocument()
 
         if not document:
             return
@@ -104,7 +102,7 @@ class Command:
 
 
     def IsActive ( self ):
-        return FreeCAD.ActiveDocument != None
+        return activeDocument() != None
 
     def iconPath ( self ):
         return icon(f'Shapes/{ self.icon }')
