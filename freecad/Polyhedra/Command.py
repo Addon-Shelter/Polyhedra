@@ -8,6 +8,7 @@ from .Utils.Resources import icon
 from .Utils.Version import Version
 from .Locale import Shapes
 
+from .PySide.QtWidgets import QToolBar
 from .PySide.QtCore import SIGNAL
 from .PySide.QtGui import QAction , QIcon
 
@@ -31,6 +32,7 @@ class Command:
         self ,
         shape : object ,
         shortcut : str ,
+        toolbar : QToolBar ,
         key : str
     ):
 
@@ -39,6 +41,12 @@ class Command:
         self.icon = key
 
         self.name = Shapes[ key ]
+
+        Gui.addCommand(key,self)
+
+        action = self.action()
+        action.setParent(toolbar)
+        toolbar.addAction(action)
 
 
     def GetResources ( self ):
