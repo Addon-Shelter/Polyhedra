@@ -64,6 +64,12 @@
         file = 'LICENSE-DOCS'
     >UNLICENSE</license>
 
+    <!--[ Contains ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
+
+    <contains 
+        generated_content = 'false'    
+    />
+    
     <!--[ Icon ]―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――-->
 
     <icon>freecad/Polyhedra/Resources/Icons/Addon.svg</icon>
