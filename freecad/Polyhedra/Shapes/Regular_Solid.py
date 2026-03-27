@@ -9,7 +9,7 @@ from typing import Any
 from Part import makePolygon , makeSolid , makeShell , Point , Face
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 Sources : list[ tuple[ PlatoType , str , str ] ] = [
     (  '4' , 'Tetrahedron'  , '' ) ,
@@ -282,73 +282,73 @@ class Regular_Solid:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching closest edge') ,
+            description = translate('App::Property','Radius of inscribed sphere touching closest edge') ,
             name = 'Midradius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching closest face') ,
+            description = translate('App::Property','Radius of inscribed sphere touching closest face') ,
             name = 'Inradius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of inscribed sphere touching furthest vertex') ,
+            description = translate('App::Property','Radius of inscribed sphere touching furthest vertex') ,
             name = 'Circumradius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Length of longest edge') ,
+            description = translate('App::Property','Length of longest edge') ,
             name = 'LongEdge' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Length of shortest edge') ,
+            description = translate('App::Property','Length of shortest edge') ,
             name = 'ShortEdge' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','What drives solid size when changing construction') ,
+            description = translate('App::Property','What drives solid size when changing construction') ,
             name = 'KeepSize' ,
             type = 'Enumeration'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Initiating body') ,
+            description = translate('App::Property','Initiating body') ,
             name = 'Source' ,
             type = 'Enumeration'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Amount of vertex truncation/elongation') ,
+            description = translate('App::Property','Amount of vertex truncation/elongation') ,
             name = 'Vtrunc' ,
             type = 'Float'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Amount of edge truncation') ,
+            description = translate('App::Property','Amount of edge truncation') ,
             name = 'Etrunc' ,
             type = 'Float'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Create the snub version') ,
+            description = translate('App::Property','Create the snub version') ,
             name = 'Snub' ,
             type = 'Enumeration'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Create the dual of the current solid') ,
+            description = translate('App::Property','Create the dual of the current solid') ,
             name = 'Dual' ,
             type = 'Bool'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Preset parameters for some hard names') ,
+            description = translate('App::Property','Preset parameters for some hard names') ,
             name = 'Presets' ,
             type = 'Enumeration'
         )

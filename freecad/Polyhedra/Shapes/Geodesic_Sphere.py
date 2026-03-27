@@ -12,7 +12,7 @@ from Part import makeSolid , makeShell , Face
 from math import sqrt , acos , sin , pi
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class GeodesicSpherePart ( DocumentObject ):
@@ -52,19 +52,19 @@ class Geodesic_Sphere:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the sphere') ,
+            description = translate('App::Property','Radius of the sphere') ,
             name = 'Radius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the triangles (approximative!)') ,
+            description = translate('App::Property','Sidelength of the triangles (approximative!)') ,
             name = 'Side' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('Properties tooltips','The sides of the basic polyhedron are divided in ... (value 1 to 10)') ,
+            description = translate('Properties tooltips','The sides of the basic polyhedron are divided in ... (value 1 to 10)') ,
             name = 'DividedBy' ,
             type = 'Integer'
         )

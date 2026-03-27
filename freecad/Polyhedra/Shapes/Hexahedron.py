@@ -9,7 +9,7 @@ from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , pi
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class HexahedronPart ( DocumentObject ):
@@ -45,13 +45,13 @@ class Hexahedron:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the hexahedron') ,
+            description = translate('App::Property','Radius of the hexahedron') ,
             name = 'Radius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the hexahedron') ,
+            description = translate('App::Property','Sidelength of the hexahedron') ,
             name = 'Side' ,
             type = 'Length'
         )

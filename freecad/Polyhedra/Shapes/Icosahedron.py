@@ -9,7 +9,7 @@ from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , acos , sin , pi
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class IcosahedronPart ( DocumentObject ):
@@ -45,13 +45,13 @@ class Icosahedron:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the icosahedron') ,
+            description = translate('App::Property','Radius of the icosahedron') ,
             name = 'Radius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the icosahedron') ,
+            description = translate('App::Property','Sidelength of the icosahedron') ,
             name = 'Side' ,
             type = 'Length'
         )

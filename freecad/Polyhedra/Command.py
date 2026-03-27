@@ -14,9 +14,9 @@ from FreeCAD import DocumentObject , activeDocument , Gui , Qt
 from typing import Any
 
 
-t = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
-Tooltip = t('Command.Tooltip','Generate a {{ Name }}')
+Tooltip = translate('Command.Tooltip','Generate a {{ Name }}')
 
 
 class Command:

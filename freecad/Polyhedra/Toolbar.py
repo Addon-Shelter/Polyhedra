@@ -10,9 +10,9 @@ from .Commands import registerCommands
 from FreeCAD import Gui , Qt , addDocumentObserver
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
-title = QT_TRANSLATE_NOOP('Toolbar','Polyhedra')
+title = translate('Toolbar','Polyhedra')
 
 
 toolbar = None

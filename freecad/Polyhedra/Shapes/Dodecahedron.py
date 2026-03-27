@@ -9,7 +9,7 @@ from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt , sin , cos , pi
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class DodecahedronPart ( DocumentObject ):
@@ -46,13 +46,13 @@ class Dodecahedron:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the dodecahedron') ,
+            description = translate('App::Property','Radius of the dodecahedron') ,
             name = 'Radius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the dodecahedron') ,
+            description = translate('App::Property','Sidelength of the dodecahedron') ,
             name = 'Side' ,
             type = 'Length'
         )

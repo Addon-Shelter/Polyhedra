@@ -9,7 +9,7 @@ from Part import makePolygon , makeSolid , makeShell , Face
 from math import sin , pi
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class PyramidPart ( DocumentObject ):
@@ -59,43 +59,43 @@ class Pyramid :
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the pyramid') ,
+            description = translate('App::Property','Radius of the pyramid') ,
             name = 'Radius1' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the pyramid') ,
+            description = translate('App::Property','Radius of the pyramid') ,
             name = 'Radius2' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Height of the pyramid') ,
+            description = translate('App::Property','Height of the pyramid') ,
             name = 'Height' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidescount of the pyramid') ,
+            description = translate('App::Property','Sidescount of the pyramid') ,
             name = 'Sidescount' ,
             type = 'Integer'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength1 of the pyramid') ,
+            description = translate('App::Property','Sidelength1 of the pyramid') ,
             name = 'Sidelength1' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength2 of the pyramid') ,
+            description = translate('App::Property','Sidelength2 of the pyramid') ,
             name = 'Sidelength2' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','alfa angle around Z') ,
+            description = translate('App::Property','alfa angle around Z') ,
             name = 'Z_rotation' ,
             type = 'Angle'
         )

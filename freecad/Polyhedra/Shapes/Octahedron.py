@@ -9,7 +9,7 @@ from Part import makePolygon , makeSolid , makeShell , Face
 from math import sqrt
 
 
-QT_TRANSLATE_NOOP = Qt.QT_TRANSLATE_NOOP
+translate = Qt.translate
 
 
 class OctahedronPart ( DocumentObject ):
@@ -46,13 +46,13 @@ class Octahedron:
             )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Radius of the octahedron') ,
+            description = translate('App::Property','Radius of the octahedron') ,
             name = 'Radius' ,
             type = 'Length'
         )
 
         property(
-            description = QT_TRANSLATE_NOOP('App::Property','Sidelength of the octahedron') ,
+            description = translate('App::Property','Sidelength of the octahedron') ,
             name = 'Side' ,
             type = 'Length'
         )
