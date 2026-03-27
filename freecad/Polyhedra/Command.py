@@ -6,9 +6,9 @@ from .Utils.Resources import icon
 from .Utils.Version import Version
 from .Locale import Shapes
 
-from .PySide.QtWidgets import QToolBar
-from .PySide.QtCore import SIGNAL
-from .PySide.QtGui import QAction , QIcon
+from PySide6.QtWidgets import QToolBar
+from PySide6.QtCore import SIGNAL
+from PySide6.QtGui import QAction , QIcon
 
 from FreeCAD import DocumentObject , activeDocument , Gui , Qt
 from typing import Any

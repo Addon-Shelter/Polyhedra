@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileNotice: Part of the Polyhedra addon.
 
-from .PySide.QtWidgets import QToolBar
+from PySide6.QtWidgets import QToolBar
 from .Command import Command
 from .Shapes import Icosahedron_Truncated , Geodesic_Sphere , Dodecahedron , Octahedron , Icosahedron , Hexahedron , Tetrahedron , Pyramid , Regular_Solid
 

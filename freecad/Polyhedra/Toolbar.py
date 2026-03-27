@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # SPDX-FileNotice: Part of the Polyhedra addon.
 
-from .PySide.QtWidgets import QMainWindow , QToolBar
-from .PySide.QtCore import QTimer
+from PySide6.QtWidgets import QMainWindow , QToolBar
+from PySide6.QtCore import QTimer
 
 from .Utils.Document import DocumentSwitch
 from .Commands import registerCommands
