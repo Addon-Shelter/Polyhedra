@@ -31,6 +31,15 @@ from .Plato import plato as source , PlatoType
 #  returns a list of vertices and faces
 
 
+def scaled ( vertices : list[ Vector ] , factor : float ):
+    return [ factor * vertex for vertex in vertices ]
+
+def mirror ( vectors : list[ Vector ] ):
+    return [ -vector for vector in vectors ]
+
+
+
+
 def createSolid (
     plato : PlatoType ,
     vtrunc : float ,
@@ -42,203 +51,304 @@ def createSolid (
     # the duals from each platonic solid
 
     dualSource : dict[ PlatoType , PlatoType ] = {
-        '4': '4',
-        '6': '8',
-        '8': '6',
-        '12': '20',
-        '20': '12'
+        '20' : '12' ,
+        '12' : '20' ,
+         '8' :  '6' ,
+         '6' :  '8' ,
+         '4' :  '4'
     }
-
-    # constants saving space and readability
 
     vtrunc *= 0.5
     etrunc *= 0.5
 
-    supposedSize = 0
-    noSnub = (snub == "None") or (etrunc == 0.5) or (etrunc == 0)
-    lSnub = (snub == "Left") and (0 < etrunc < 0.5)
-    rSnub = (snub == "Right") and (0 < etrunc < 0.5)
+    scale = 0
+
+    noSnub = ( snub == 'None' ) or ( etrunc == 0.5 ) or ( etrunc == 0 )
+    lSnub = ( snub == 'Left' ) and ( 0 < etrunc < 0.5 )
+    rSnub = ( snub == 'Right' ) and ( 0 < etrunc < 0.5 )
 
     # no truncation
-    if vtrunc == 0:
-        if dual:  # dual is as simple as another, but mirrored platonic solid
-            vInput, fInput = source(dualSource[plato])
-            supposedSize = sum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
-            vInput = [-i * supposedSize for i in vInput]            # mirror it
-            return vInput, fInput
+
+    if vtrunc == 0 :
+
+        # dual is as simple as another, but mirrored platonic solid
+
+        if dual :
+
+            vectors , faces = source( dualSource[ plato ] )
+
+            vector_indices = faces[ 0 ]
+
+            vectors_per_face = len(vector_indices)
+
+            factor = sum([ vectors[ index ] for index in vector_indices ]).Length / vectors_per_face
+
+            vectors = mirror(vectors)
+            vectors = scaled(vectors,factor)
+
+            return vectors , faces
+
         return source(plato)
-    elif 0 < vtrunc <= 0.5:  # simple truncation of the source
-        vInput, fInput = source(plato)
-    else:
-        # truncation is now equal to simple truncation of the dual of the source
-        vInput, fInput = source(dualSource[plato])
-        supposedSize = sum(vInput[i] for i in fInput[0]).Length / len(fInput[0])
-        vtrunc = 1 - vtrunc  # account for the source being a dual
-        if vtrunc == 0:    # no truncation needed
+
+    # simple truncation of the source
+
+    elif 0 < vtrunc <= 0.5 :
+
+        vectors , faces = source(plato)
+
+    # truncation is now equal to simple
+    # truncation of the dual of the source
+
+    else :
+
+        vectors , faces = source(dualSource[plato])
+
+        scale = sum(vectors[i] for i in faces[0]).Length / len(faces[0])
+
+        # account for the source being a dual
+        vtrunc = 1 - vtrunc
+
+        # no truncation needed
+        if vtrunc == 0:
+
             if dual:
-                vInput, fInput = source(plato)
-                vInput = [i * supposedSize for i in vInput]
-                return vInput, fInput
-            vInput = [-i * supposedSize for i in vInput]
-            return vInput, fInput
+
+                vectors , faces = source(plato)
+
+                vectors = [ i * scale for i in vectors ]
+
+                return vectors, faces
+
+            vectors = [ -i * scale for i in vectors ]
+
+            return vectors , faces
 
     # generate connection database
-    vDict = [{} for i in vInput]
-    # for every face, store what vertex comes after and before the current vertex
-    for x in range(len(fInput)):
-        i = fInput[x]
-        for j in range(len(i)):
-            vDict[i[j - 1]][i[j]] = [i[j - 2], x]
-            if len(vDict[i[j - 1]]) == 1:
-                vDict[i[j - 1]][-1] = i[j]
+
+    vDict = [ {} for i in vectors ]
+
+    # for every face, store what vertex comes
+    # after and before the current vertex
+
+    for face_index in range(len(faces)):
+
+        vector_indices = faces[ face_index ]
+
+        for vector_index in range(len(vector_indices)):
+
+            vDict[ vector_indices[ vector_index - 1 ] ][ vector_indices[ vector_index ] ] = [ vector_indices[ vector_index - 2 ] , face_index ]
+
+            if len(vDict[vector_indices[vector_index - 1]]) == 1:
+                vDict[vector_indices[vector_index - 1]][-1] = vector_indices[vector_index]
 
     # the actual connection database: exists out of:
     # [vtrunc pos, etrunc pos, connected vert IDs, connected face IDs]
-    vData = [[[], [], [], []] for i in vInput]
+
+    vData = [[[], [], [], []] for i in vectors]
+
     fvOutput = []      # faces created from truncated vertices
     feOutput = []      # faces created from truncated edges
     vOutput = []       # newly created vertices
-    for x in range(len(vInput)):
-        i = vDict[x]   # lookup the current vertex
-        current = i[-1]
+
+    for face_index in range(len(vectors)):
+
+        vector_indices = vDict[face_index]   # lookup the current vertex
+        current = vector_indices[-1]
+
         while True:    # follow the chain to get a ccw order of connected verts and faces
-            vData[x][2].append(i[current][0])
-            vData[x][3].append(i[current][1])
+
+            vData[face_index][2].append(vector_indices[current][0])
+            vData[face_index][3].append(vector_indices[current][1])
+
             # create truncated vertices
-            vData[x][0].append((1 - vtrunc) * vInput[x] + vtrunc * vInput[vData[x][2][-1]])
-            current = i[current][0]
-            if current == i[-1]:
+
+            vData[face_index][0].append((1 - vtrunc) * vectors[face_index] + vtrunc * vectors[vData[face_index][2][-1]])
+            current = vector_indices[current][0]
+
+            if current == vector_indices[-1]:
                 break                   # if we're back at the first: stop the loop
+
         fvOutput.append([])             # new face from truncated vert
-        fOffset = x * (len(i) - 1)      # where to start off counting faceVerts
+        fOffset = face_index * (len(vector_indices) - 1)      # where to start off counting faceVerts
+
         # only create one vert where one is needed (v1 todo: done)
+
         if etrunc == 0.5:
-            for j in range(len(i) - 1):
-                vOutput.append((vData[x][0][j] + vData[x][0][j - 1]) * etrunc)  # create vert
-                fvOutput[x].append(fOffset + j)                                 # add to face
-            fvOutput[x] = fvOutput[x][1:] + [fvOutput[x][0]]                    # rotate face for ease later on
+
+            for vector_index in range(len(vector_indices) - 1):
+                vOutput.append((vData[face_index][0][vector_index] + vData[face_index][0][vector_index - 1]) * etrunc)  # create vert
+                fvOutput[face_index].append(fOffset + vector_index)                                 # add to face
+
+            fvOutput[face_index] = fvOutput[face_index][1:] + [fvOutput[face_index][0]]                    # rotate face for ease later on
+
             # create faces from truncated edges.
-            for j in range(len(i) - 1):
-                if x > vData[x][2][j]:     # only create when other vertex has been added
-                    index = vData[vData[x][2][j]][2].index(x)
-                    feOutput.append([fvOutput[x][j], fvOutput[x][j - 1],
-                                     fvOutput[vData[x][2][j]][index],
-                                     fvOutput[vData[x][2][j]][index - 1]])
+
+            for vector_index in range(len(vector_indices) - 1):
+                if face_index > vData[face_index][2][vector_index]:     # only create when other vertex has been added
+                    index = vData[vData[face_index][2][vector_index]][2].index(face_index)
+                    feOutput.append([fvOutput[face_index][vector_index], fvOutput[face_index][vector_index - 1],
+                                     fvOutput[vData[face_index][2][vector_index]][index],
+                                     fvOutput[vData[face_index][2][vector_index]][index - 1]])
         # edge truncation between none and full
+
         elif etrunc > 0:
-            for j in range(len(i) - 1):
+
+            for vector_index in range(len(vector_indices) - 1):
+
                 # create snubs from selecting verts from rectified meshes
+
                 if rSnub:
-                    vOutput.append(etrunc * vData[x][0][j] + (1 - etrunc) * vData[x][0][j - 1])
-                    fvOutput[x].append(fOffset + j)
+                    vOutput.append(etrunc * vData[face_index][0][vector_index] + (1 - etrunc) * vData[face_index][0][vector_index - 1])
+                    fvOutput[face_index].append(fOffset + vector_index)
                 elif lSnub:
-                    vOutput.append((1 - etrunc) * vData[x][0][j] + etrunc * vData[x][0][j - 1])
-                    fvOutput[x].append(fOffset + j)
+                    vOutput.append((1 - etrunc) * vData[face_index][0][vector_index] + etrunc * vData[face_index][0][vector_index - 1])
+                    fvOutput[face_index].append(fOffset + vector_index)
                 else:   # noSnub,  select both verts from rectified mesh
-                    vOutput.append(etrunc * vData[x][0][j] + (1 - etrunc) * vData[x][0][j - 1])
-                    vOutput.append((1 - etrunc) * vData[x][0][j] + etrunc * vData[x][0][j - 1])
-                    fvOutput[x].append(2 * fOffset + 2 * j)
-                    fvOutput[x].append(2 * fOffset + 2 * j + 1)
+                    vOutput.append(etrunc * vData[face_index][0][vector_index] + (1 - etrunc) * vData[face_index][0][vector_index - 1])
+                    vOutput.append((1 - etrunc) * vData[face_index][0][vector_index] + etrunc * vData[face_index][0][vector_index - 1])
+                    fvOutput[face_index].append(2 * fOffset + 2 * vector_index)
+                    fvOutput[face_index].append(2 * fOffset + 2 * vector_index + 1)
+
             # rotate face for ease later on
+
             if noSnub:
-                fvOutput[x] = fvOutput[x][2:] + fvOutput[x][:2]
+                fvOutput[face_index] = fvOutput[face_index][2:] + fvOutput[face_index][:2]
             else:
-                fvOutput[x] = fvOutput[x][1:] + [fvOutput[x][0]]
+                fvOutput[face_index] = fvOutput[face_index][1:] + [fvOutput[face_index][0]]
+
             # create single face for each edge
+
             if noSnub:
-                for j in range(len(i) - 1):
-                    if x > vData[x][2][j]:
-                        index = vData[vData[x][2][j]][2].index(x)
-                        feOutput.append([fvOutput[x][j * 2], fvOutput[x][2 * j - 1],
-                                         fvOutput[vData[x][2][j]][2 * index],
-                                         fvOutput[vData[x][2][j]][2 * index - 1]])
+                for vector_index in range(len(vector_indices) - 1):
+                    if face_index > vData[face_index][2][vector_index]:
+                        index = vData[vData[face_index][2][vector_index]][2].index(face_index)
+                        feOutput.append([fvOutput[face_index][vector_index * 2], fvOutput[face_index][2 * vector_index - 1],
+                                         fvOutput[vData[face_index][2][vector_index]][2 * index],
+                                         fvOutput[vData[face_index][2][vector_index]][2 * index - 1]])
+
             # create 2 tri's for each edge for the snubs
+
             elif rSnub:
-                for j in range(len(i) - 1):
-                    if x > vData[x][2][j]:
-                        index = vData[vData[x][2][j]][2].index(x)
-                        feOutput.append([fvOutput[x][j], fvOutput[x][j - 1],
-                                         fvOutput[vData[x][2][j]][index]])
-                        feOutput.append([fvOutput[x][j], fvOutput[vData[x][2][j]][index],
-                                         fvOutput[vData[x][2][j]][index - 1]])
+
+                for vector_index in range(len(vector_indices) - 1):
+                    if face_index > vData[face_index][2][vector_index]:
+                        index = vData[vData[face_index][2][vector_index]][2].index(face_index)
+                        feOutput.append([fvOutput[face_index][vector_index], fvOutput[face_index][vector_index - 1],
+                                         fvOutput[vData[face_index][2][vector_index]][index]])
+                        feOutput.append([fvOutput[face_index][vector_index], fvOutput[vData[face_index][2][vector_index]][index],
+                                         fvOutput[vData[face_index][2][vector_index]][index - 1]])
             elif lSnub:
-                for j in range(len(i) - 1):
-                    if x > vData[x][2][j]:
-                        index = vData[vData[x][2][j]][2].index(x)
-                        feOutput.append([fvOutput[x][j], fvOutput[x][j - 1],
-                                         fvOutput[vData[x][2][j]][index - 1]])
-                        feOutput.append([fvOutput[x][j - 1], fvOutput[vData[x][2][j]][index],
-                                         fvOutput[vData[x][2][j]][index - 1]])
+
+                for vector_index in range(len(vector_indices) - 1):
+                    if face_index > vData[face_index][2][vector_index]:
+                        index = vData[vData[face_index][2][vector_index]][2].index(face_index)
+                        feOutput.append([fvOutput[face_index][vector_index], fvOutput[face_index][vector_index - 1],
+                                         fvOutput[vData[face_index][2][vector_index]][index - 1]])
+                        feOutput.append([fvOutput[face_index][vector_index - 1], fvOutput[vData[face_index][2][vector_index]][index],
+                                         fvOutput[vData[face_index][2][vector_index]][index - 1]])
+
         # special rules for birectified mesh (v1 todo: done)
+
         elif vtrunc == 0.5:
-            for j in range(len(i) - 1):
-                if x < vData[x][2][j]:  # use current vert,  since other one has not passed yet
-                    vOutput.append(vData[x][0][j])
-                    fvOutput[x].append(len(vOutput) - 1)
+
+            for vector_index in range(len(vector_indices) - 1):
+                if face_index < vData[face_index][2][vector_index]:  # use current vert,  since other one has not passed yet
+                    vOutput.append(vData[face_index][0][vector_index])
+                    fvOutput[face_index].append(len(vOutput) - 1)
                 else:
                     # search for other edge to avoid duplicity
-                    connectee = vData[x][2][j]
-                    fvOutput[x].append(fvOutput[connectee][vData[connectee][2].index(x)])
+                    connectee = vData[face_index][2][vector_index]
+                    fvOutput[face_index].append(fvOutput[connectee][vData[connectee][2].index(face_index)])
+
         else:   # vert truncation only
-            vOutput.extend(vData[x][0])   # use generated verts from way above
-            for j in range(len(i) - 1):   # create face from them
-                fvOutput[x].append(fOffset + j)
+
+            vOutput.extend(vData[face_index][0])   # use generated verts from way above
+
+            for vector_index in range(len(vector_indices) - 1):   # create face from them
+                fvOutput[face_index].append(fOffset + vector_index)
 
     # calculate supposed vertex length to ensure continuity
-    if supposedSize and not dual:                    # this to make the vtrunc > 1 work
-        supposedSize *= len(fvOutput[0]) / sum(vOutput[i] for i in fvOutput[0]).Length
-        vOutput = [-i * supposedSize for i in vOutput]
+
+    if scale and not dual:                    # this to make the vtrunc > 1 work
+        scale *= len(fvOutput[0]) / sum(vOutput[i] for i in fvOutput[0]).Length
+        vOutput = [-i * scale for i in vOutput]
 
     # create new faces by replacing old vert IDs by newly generated verts
-    ffOutput = [[] for i in fInput]
-    for x in range(len(fInput)):
+
+    ffOutput = [[] for i in faces]
+
+    for face_index in range(len(faces)):
+
         # only one generated vert per vertex,  so choose accordingly
+
         if etrunc == 0.5 or (etrunc == 0 and vtrunc == 0.5) or lSnub or rSnub:
-            ffOutput[x] = [fvOutput[i][vData[i][3].index(x) - 1] for i in fInput[x]]
+            ffOutput[face_index] = [fvOutput[i][vData[i][3].index(face_index) - 1] for i in faces[face_index]]
+
         # two generated verts per vertex
+
         elif etrunc > 0:
-            for i in fInput[x]:
-                ffOutput[x].append(fvOutput[i][2 * vData[i][3].index(x) - 1])
-                ffOutput[x].append(fvOutput[i][2 * vData[i][3].index(x) - 2])
-        else:   # cutting off corners also makes 2 verts
-            for i in fInput[x]:
-                ffOutput[x].append(fvOutput[i][vData[i][3].index(x)])
-                ffOutput[x].append(fvOutput[i][vData[i][3].index(x) - 1])
+            for vector_indices in faces[face_index]:
+                ffOutput[face_index].append(fvOutput[vector_indices][2 * vData[vector_indices][3].index(face_index) - 1])
+                ffOutput[face_index].append(fvOutput[vector_indices][2 * vData[vector_indices][3].index(face_index) - 2])
+
+        # cutting off corners also makes 2 verts
+
+        else:
+            for vector_indices in faces[face_index]:
+                ffOutput[face_index].append(fvOutput[vector_indices][vData[vector_indices][3].index(face_index)])
+                ffOutput[face_index].append(fvOutput[vector_indices][vData[vector_indices][3].index(face_index) - 1])
 
     if not dual:
         return vOutput, fvOutput + feOutput + ffOutput
     else:
+
         # do the same procedure as above,  only now on the generated mesh
         # generate connection database
+
         vDict = [{} for i in vOutput]
         dvOutput = [0 for i in fvOutput + feOutput + ffOutput]
         dfOutput = []
 
-        for x in range(len(dvOutput)):               # for every face
-            i = (fvOutput + feOutput + ffOutput)[x]  # choose face to work with
+        # for every face
+        for face_index in range(len(dvOutput)):
+
+            vector_indices = (fvOutput + feOutput + ffOutput)[face_index]  # choose face to work with
+
             # find vertex from face
-            normal = (vOutput[i[0]] - vOutput[i[1]]).cross(vOutput[i[2]] - vOutput[i[1]]).normalize()
-            dvOutput[x] = normal / (normal.dot(vOutput[i[0]]))
-            for j in range(len(i)):  # create vert chain
-                vDict[i[j - 1]][i[j]] = [i[j - 2], x]
-                if len(vDict[i[j - 1]]) == 1:
-                    vDict[i[j - 1]][-1] = i[j]
+
+            normal = (vOutput[vector_indices[0]] - vOutput[vector_indices[1]]).cross(vOutput[vector_indices[2]] - vOutput[vector_indices[1]]).normalize()
+            dvOutput[face_index] = normal / (normal.dot(vOutput[vector_indices[0]]))
+
+            # create vert chain
+            for vector_index in range(len(vector_indices)):
+
+                vDict[vector_indices[vector_index - 1]][vector_indices[vector_index]] = [vector_indices[vector_index - 2], face_index]
+
+                if len(vDict[vector_indices[vector_index - 1]]) == 1:
+                    vDict[vector_indices[vector_index - 1]][-1] = vector_indices[vector_index]
 
         # calculate supposed size for continuity
-        supposedSize = sum([vInput[i] for i in fInput[0]]).Length / len(fInput[0])
-        supposedSize /= dvOutput[-1].Length
-        dvOutput = [i * supposedSize for i in dvOutput]
+
+        scale = sum([vectors[i] for i in faces[0]]).Length / len(faces[0])
+        scale /= dvOutput[-1].Length
+        dvOutput = [i * scale for i in dvOutput]
 
         # use chains to create faces
-        for x in range(len(vOutput)):
-            i = vDict[x]
-            current = i[-1]
+
+        for face_index in range(len(vOutput)):
+
+            vector_indices = vDict[face_index]
+            current = vector_indices[-1]
             face = []
+
             while True:
-                face.append(i[current][1])
-                current = i[current][0]
-                if current == i[-1]:
+
+                face.append(vector_indices[current][1])
+                current = vector_indices[current][0]
+
+                if current == vector_indices[-1]:
                     break
+
             dfOutput.append(face)
 
-        return dvOutput, dfOutput
+        return dvOutput , dfOutput
